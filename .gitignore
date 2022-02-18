@@ -6,3 +6,8 @@
 *.xml
 *.gz
 *.bib
+*.snm
+*.out
+*.nav
+*.snm
+*.toc
