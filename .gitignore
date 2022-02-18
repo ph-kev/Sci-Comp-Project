@@ -1,0 +1,8 @@
+# Ignore files 
+*.aux
+*.fdb_latexmk
+*.log
+*.fls
+*.xml
+*.gz
+*.bib
