@@ -1,3 +1,3 @@
-# Scientific Computing Project: Numerical Methods for Stiff ODEs 
+# Scientific Computing Project: Modeling Traffic using Traffic Flow Theory  
 
-The project is about motivating why we should care about stiff ODEs, characterization of stiff ODEs, and numerical methods to deal with them. 
+This project is about modeling traffic. 
