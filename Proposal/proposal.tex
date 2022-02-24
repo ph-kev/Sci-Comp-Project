@@ -13,4 +13,10 @@
 \begin{document}	
 	\maketitle
     TODO: Make research proposal. Plan to do modeling of traffic. 
+
+    We will model vehicular traffic as a continuous distribution of vehicles. We will use the conservation equation 
+    \begin{equation}
+        \pdv{k}{t} - \pdv{q}{x} = 0
+    \end{equation}
+    where $k$ is the concentration of traffic and $q$ is the flow rate of the traffic. To find the relation between $k$ and $q$, we are thinking of fitting a curve to traffic data. Then, we will use a finite differences method to numerically solve the equation. We will also look at special cases and initial conditions qualitatively to find out where our numerical methods work and where they break down.
 \end{document}
