@@ -6,17 +6,25 @@
 \usepackage{amssymb}
 \usepackage{derivative}
 
+% TODO: Stability analysis, where are we getting data, what problems do we want to solve? Description of the problem. As much as you can offer in terms of the techniques, thoughts expecting what you see, narrow down the problem, not more than a page, for this project, it is motivated using the techniques we are interested in
+
 \title{Project Proposal}
 \author{Kaeshav Danesh and Kevin Phan}
 \date{\today}
 
 \begin{document}	
 	\maketitle
-    TODO: Stability analysis, where are we getting data, what problems do we want to solve? Description of the problem. As much as you can offer in terms of the techniques, thoughts expecting what you see, narrow down the problem, not more than a page, for this project, it is motivated using the techniques we are interested in
-
-    We will model vehicular traffic as a continuous distribution of vehicles. We will use the conservation equation 
+    
+    
+    We are interested in modeling traffic under various conditions such as the differences in the number of lanes and traffic jams. We will model vehicular traffic as a continuous flow of vehicles. This allows us to use the continuity equation 
     \begin{equation}
-        \pdv{k}{t} - \pdv{q}{x} = 0
+        \pdv{k}{t} + \pdv{q}{x} = 0
     \end{equation}
-    where $k$ is the concentration of traffic and $q$ is the flow rate of the traffic. To find the relation between $k$ and $q$, we are thinking of fitting a curve to traffic data. Then, we will use a finite differences method to numerically solve the equation. We will also look at special cases and initial conditions qualitatively to find out where our numerical methods work and where they break down. 
+    where $k$ is the concentration of traffic and $q$ is the flow rate of the traffic. We need a constitutive equation which reflects the vehicular traffic. Possible models for the constructive equation include Greenshields' model and Greenberg's model. To find $q(k)$, we can find real life data and use curve fitting. If this is not possible, we will use reasonable assumptions and parameters to find $q(k)$. 
+    
+    Possible directions to expand on the continuity equation is to explore the cases when there are multiple on- and off-ramps, the change in the number of lanes, and traffic jams. We intend to do this by modifying the initial conditions or modifying the continuity equation. 
+    
+    We are also considering using the Lighthill-Whiteham-Richards model. This allows us to investigate the fundamental diagram which is a diagram about flow-density data and how it relates to phenomena in traffic such as shock waves and the solution to the equations described by the Lighthill-Whiteham-Richards model.
+
+    To numerically solve the partial differential equation, we will use a finite differences method. We will also look at special cases and initial conditions qualitatively to find out where our numerical methods work and where they break down. Further considerations for numerical methods involved stability analysis and error analysis. 
 \end{document}
