@@ -10,21 +10,22 @@
 
 % TODO: Figure out the differences between the two models and add possible source of data?
 \title{Project Proposal}
+\vspace{-9mm}
 \author{Kaeshav Danesh and Kevin Phan}
 \date{\today}
 
 \begin{document}	
 	\maketitle
-    \vspace{-1mm}
-    We are interested in modeling traffic under various conditions such as the differences in the number of lanes and traffic jams. We will model vehicular traffic as a continuous flow of vehicles. This allows us to use the continuity equation 
+    \vspace{-7mm}
+    We are interested in modeling traffic flow under various conditions, such as changes in the number of lanes and traffic jams. We will model vehicular traffic as a continuous flow of vehicles. This allows us to use the continuity equation 
     \begin{equation}
         \pdv{k}{t} + \pdv{q}{x} = 0
     \end{equation}
-    where $k$ is the concentration of traffic and $q$ is the flow rate of the traffic. We need a constitutive equation which reflects the vehicular traffic. One example of a constitutive equation is $q(k)$. Possible models for $q(k)$ include Greenshields' model and Greenberg's model. To find $q(k)$, we can find real life data and use curve fitting. A source of real life data include data collected from traffic count stations. If this is not possible, we will use reasonable assumptions and parameters to find $q(k)$. 
+    where $k$ is the concentration of traffic and $q$ is the flow rate of the traffic. We need a constitutive equation which is specific to traffic flow. One example of a constitutive equation is $q(k)$. Possible models for $q(k)$ include Greenshields' model and Greenberg's model. To find $q(k)$, we can fit a curve to real life data. For example, we can use data collected from traffic count stations. If this is not possible, we will use reasonable assumptions and parameters to define $q(k)$. 
     
-    Possible directions to expand on the continuity equation is to explore the cases when there are multiple on- and off-ramps, the change in the number of lanes, and traffic jams. We intend to do this by modifying the initial and boundary conditions or modifying the continuity equation. 
+    Possible directions to expand on our model is to explore multiple on- and off-ramps, change in the number of lanes, and traffic jams. We intend to do this by modifying the initial and boundary conditions or modifying the continuity equation. 
     
-    We are also considering using the Lighthill-Whiteham-Richards model. This allows us to investigate the fundamental diagram which is about flow-density data. We can relate the diagram to phenomena in traffic such as shock waves and the solution to the equations of the Lighthill-Whiteham-Richards model.
+    We are also considering using the Lighthill-Whiteham-Richards model. This allows us to investigate the fundamental diagram and visualize flow-density. We can relate the diagram to phenomena in traffic such as shock waves and the solution to the equations of the Lighthill-Whiteham-Richards model.
 
-    To numerically solve the partial differential equation, we will use a finite differences method, specifically the FTCS scheme.  We will also look at special cases and initial conditions qualitatively to find out where our numerical methods work and where they break down. We expect this method to be numerically unstable because the continuity equation is hyperbolic, so other numerical methods will be considered, including the lax scheme. 
+    To numerically solve the partial differential equation, we will use a finite differences method, specifically the FTCS scheme.  We will also look at special cases and initial conditions qualitatively to find out where our numerical methods work and where they break down. We expect this method to be numerically unstable because the continuity equation is hyperbolic. So, we hope to explore other numerical methods, including the Lax scheme. We plain for the bulk of our project to explore different numerical schemes for solving hyperbolic PDEs.
 \end{document}
