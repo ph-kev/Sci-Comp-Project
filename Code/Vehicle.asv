@@ -3,31 +3,29 @@ classdef Vehicle<handle
     %   Detailed explanation goes here
     
     properties
-        width
+        length
         state
         params
     end
     
     methods
-        function obj = Vehicle(x_0, v_0, a_0, width)
+        function obj = Vehicle(x_0, v_0, a_0, length, varargin)
             %VEHICLE Construct an instance of this class
             %   Detailed explanation goes here
-            obj.width = width;
+            obj.length = length;
             obj.state = [x_0, v_0, a_0];
             % optional parameters
-            %varargin_param_names = {'adaptation time', 'v_desired', 'transition_width', 'form_factor', 'time_gap', 'min_gap'};
-            obj.params = [5, 120, 15, 1.5, 1.4, 3];
-            %if (nargin > length(varargin_default_values))
-            %    error('Too many input parameters');
-            %end
-            %obj.params = varargin_default_values;
-            %obj.params(1:nargin) = varargin;
+            varargin_param_names = {'adaptation time', 'v_desired', 'transition_width', 'form_factor', 'time_gap', 'min_gap'};
+            varargin_default_values = [0.65, 33.3, 15, 1.5, 1.4, 3];
+            if (length(varargin)>length(varargin_default_c))
+                error('Too many input parameters');
+            end
+            obj.params = varargin_default_values;
+            obj.params(1:nargin) = varargin;
         end
         
         function v_opt = v_opt(obj, s)  % s is the gap between the cars 
-            v_0 = obj.params(2);
-            T = obj.params(5);
-            s_0 = obj.params(6);
+            [~, v_0, ~, ~, T, s_0] = obj.params; 
             v_opt = max(0,min(v_0,(s-s_0)/(T)));
         end
         
@@ -35,14 +33,12 @@ classdef Vehicle<handle
             %METHOD1 Summary of this method goes here
             %   Detailed explanation goes here
             tau = obj.params(1); 
-            oldstate = obj.state;
-            x_a = oldstate(1);
-            v_a = oldstate(2);
-            acc = ((obj.v_opt(s) - v_a)/tau) - gamma*(v_a - v_l);
+            [x_a, v_a, ~] = obj.state;
+            acc = ((v_opt(s) - v_a)/tau) - gamma*(v_a - v_l);
             vel = v_a + acc * t_step; 
             pos = x_a + ((v_a + vel)/2)*t_step; 
             newstate = [pos, vel, acc];
-            obj.state = [pos, vel, acc];
+            obj.state = newstate;
         end
     end
 end
