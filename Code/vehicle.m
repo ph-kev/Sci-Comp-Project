@@ -6,6 +6,7 @@ classdef Vehicle<handle
         width
         state
         params
+        lane
     end
     
     methods
@@ -16,12 +17,13 @@ classdef Vehicle<handle
             obj.state = [x_0, v_0, a_0];
             % optional parameters
             %varargin_param_names = {'adaptation time', 'v_desired', 'transition_width', 'form_factor', 'time_gap', 'min_gap'};
-            obj.params = [5, 120, 15, 1.5, 1.4, 3];
+            obj.params = [.65, 33.3, 15, 1.5, 1.4, 3];
             %if (nargin > length(varargin_default_values))
             %    error('Too many input parameters');
             %end
             %obj.params = varargin_default_values;
             %obj.params(1:nargin) = varargin;
+            obj.lane = 1;
         end
         
         function v_opt = v_opt(obj, s)  % s is the gap between the cars 
