@@ -6,9 +6,45 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{listings}
+\usepackage{hyperref}
+\usepackage[symbols,nogroupskip,record]{glossaries-extra}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{references.bib}
+
+\glsxtrnewsymbol[
+ description={position},
+ location={(see chapter~\ref{ch1}).}
+]{x}{\ensuremath{x}}
+\glsxtrnewsymbol[description={velocity}]{v}{\ensuremath{v}}
+\glsxtrnewsymbol[description={acceleration}]{a}{\ensuremath{a}}
+\glsxtrnewsymbol[description={time}]{t}{\ensuremath{t}}
+\glsxtrnewsymbol[description={force}]{F}{\ensuremath{F}}
+
+\title{Investigating Car Following Model}
+\author{Kaeshav Danesh and Kevin Phan}
+\date{\today}
 
 \begin{document}
+    \maketitle
+
+    \begin{abstract}
+    TODO
+    \end{abstract}
+
+    \tableofcontents
+
     \section{Introduction}
+    bruh moment \cite{traffic}
+    \section{General Model}
+    \subsection{Mathematical Description}\label{ch1}
+    \subsection{Numerical Scheme}
     \section{Conclusion}
     \section{Further Remarks}
+    \printunsrtglossary[type=symbols,style=long,title={List of Symbols}]
+    \newpage 
+    \printbibliography
 \end{document}
