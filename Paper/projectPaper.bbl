@@ -16,44 +16,5 @@
   {}
 \endgroup
 
-
-\refsection{0}
-  \datalist[entry]{ynt/global//global/global}
-    \entry{traffic}{book}{}
-      \name{author}{2}{}{%
-        {{hash=21d5ad5044c3bd92d3980f5df317324d}{%
-           family={Treiber},
-           familyi={T\bibinitperiod},
-           given={Martin},
-           giveni={M\bibinitperiod}}}%
-        {{hash=469a2cc63f35c092e5db8571c4cada63}{%
-           family={Kesting},
-           familyi={K\bibinitperiod},
-           given={Arne},
-           giveni={A\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {Berlin Heidelberg}%
-      }
-      \list{publisher}{1}{%
-        {Springer}%
-      }
-      \strng{namehash}{fedf49222ff8266e42260a3731e2049a}
-      \strng{fullhash}{fedf49222ff8266e42260a3731e2049a}
-      \strng{bibnamehash}{fedf49222ff8266e42260a3731e2049a}
-      \strng{authorbibnamehash}{fedf49222ff8266e42260a3731e2049a}
-      \strng{authornamehash}{fedf49222ff8266e42260a3731e2049a}
-      \strng{authorfullhash}{fedf49222ff8266e42260a3731e2049a}
-      \field{labelalpha}{TK13}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-3-642-32459-8}
-      \field{title}{Traffic Flow Dynamics: Data, Models and Simulation}
-      \field{year}{2013}
-    \endentry
-  \enddatalist
-\endrefsection
 \endinput
 
