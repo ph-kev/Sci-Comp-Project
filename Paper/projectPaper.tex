@@ -7,6 +7,9 @@
 \usepackage{amssymb}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{float}
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix}
 \usepackage[symbols,nogroupskip,record]{glossaries-extra}
 \usepackage[
 backend=biber,
@@ -41,7 +44,48 @@ sorting=ynt
     
 
     \section{General Model}
-    \subsection{Mathematical Description}\label{ch1}
+    \subsection{Mathematical Formulation}\label{ch1}
+        We follow the mathematical formulation of car following model in \cite{traffic}.
+        \begin{figure}[H]
+            \begin{tikzpicture}[scale=1.55]
+                \draw (-0.3,-0.3) -- (7.3,-0.3);
+                \draw [fill = blue] (0,0) rectangle (2,0.7);
+                \draw [fill=gray, thick] (0.5,0) circle [radius=0.3];
+                \draw [fill=gray, thick] (1.5,0) circle [radius=0.3];
+                \draw (1.5,0.7) -- (1.1,1.1);
+                \draw (1.1,1.1) -- (0.6,1.1);
+                \draw (0.6,1.1) -- (0.4,0.7);
+                \node (car_a-1) at (0.85,1.3) {Car $\alpha$};
+                \node (vel) at (2.3,0.9) {$v_{\alpha}$};
+                \node (vel_start) at (1.3,0.9) {};
+                \draw[->] (vel_start) -> (vel);
+                \begin{scope}[shift={(5,0)}]
+                    \draw [fill = red] (0,0) rectangle (2,0.7);
+                    \draw [fill=gray, thick] (0.5,0) circle [radius=0.3];
+                    \draw [fill=gray, thick] (1.5,0) circle [radius=0.3];
+                    \draw (1.5,0.7) -- (1.1,1.1);
+                    \draw (1.1,1.1) -- (0.6,1.1);
+                    \draw (0.6,1.1) -- (0.4,0.7);
+                    \node (car_a-1) at (0.85,1.3) {Car $\alpha - 1$};
+                    \node (vel) at (2.3,0.9) {$v_{\alpha - 1}$};
+                    \node (vel_start) at (1.3,0.9) {};
+                    \draw[->] (vel_start) -> (vel);
+                  \end{scope}
+                \node (x) at (2,0.35) {};
+                \node (y) at (5,0.35) {};
+                \node (x_pos) at (2,0) {};
+                \node (x_sym) at (2,-0.7) {$x_{\alpha }$};
+                \node (x_pos1) at (7,0) {};
+                \node (x_sym1) at (7,-0.7) {$x_{\alpha - 1}$};
+                \draw[<->] (x) -- node[above] {$s_{\alpha}$} (y);
+                \draw[<-] (x_pos) -- (x_sym);
+                \draw[<-] (x_pos1) -- (x_sym1);
+                \end{tikzpicture} 
+            \centering
+            \caption{Defining index, position, velocity, and gap of a car.}
+        \end{figure}  
+
+
     \subsection{Numerical Scheme}
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}

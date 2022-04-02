@@ -11,3 +11,5 @@
 *.snm
 *.toc
 *.bcf
+*.bbl
+*.blg
