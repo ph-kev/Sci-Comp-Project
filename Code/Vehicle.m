@@ -2,22 +2,27 @@ classdef Vehicle<handle
     % VEHICLE Summary of this class goes here
 
     properties
+        number
         width % Length of car.
         state % Position, velocity, and acceleration.
         params % Adaptation time, v_desired, transition_width, form_factor, time_gap, min_gap.
         lane % Lane number.
+        isTrafficLight
     end
 
     methods
-        function obj = Vehicle(x_0, v_0, a_0, width, varargin)
+        function obj = Vehicle(n, x_0, v_0, a_0, lane, width, tl, varargin)
             % VEHICLE Construct an instance of this class
             % \brief Find the optimal velocity of the car.
             % \param obj, car.
             % \param s, gap of the car and the leading car.
             % \returns Vehicle's optimal velocity.
             if nargin > 0 % Check the number of parameters.
+                obj.number = n;
                 obj.width = width;
                 obj.state = [x_0, v_0, a_0];
+                obj.lane = lane;
+                obj.isTrafficLight = tl;
                 % Optional paramters.
                 obj.params = [0.65, 33.3, 15, 1.5, 1.4, 3];
                 if (length(varargin) > length(obj.params))
@@ -27,9 +32,10 @@ classdef Vehicle<handle
                 for i=1:length(varargin)
                     obj.params(i) = varargin(i);
                 end
-                obj.lane = 1;
             end
         end
+        
+        % Add Constructor for traffic light length = 0 and desired v = 0
 
         function v_opt = v_opt(obj, s)  % s is the gap between the cars
             % \brief Find the optimal velocity of the car.

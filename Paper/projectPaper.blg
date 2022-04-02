@@ -1,9 +1,8 @@
-[0] Config.pm:307> INFO - This is Biber 2.17
-[0] Config.pm:310> INFO - Logfile is 'projectPaper.blg'
-[279] biber-MSWIN64:340> INFO - === 
-[393] Biber.pm:418> INFO - Reading 'projectPaper.bcf'
-[563] Biber.pm:972> INFO - Found 0 citekeys in bib section 0
-[586] bbl.pm:654> INFO - Writing 'projectPaper.bbl' with encoding 'UTF-8'
-[586] bbl.pm:757> INFO - Output to projectPaper.bbl
-[588] Biber.pm:130> WARN - The file 'projectPaper.bcf' does not contain any citations!
-[588] Biber.pm:132> INFO - WARNINGS: 1
+[1] Config.pm:311> INFO - This is Biber 2.16
+[1] Config.pm:314> INFO - Logfile is 'projectPaper.blg'
+[136] biber-MSWIN64:340> INFO - === 
+[185] Biber.pm:415> INFO - Reading 'projectPaper.bcf'
+[322] Utils.pm:411> ERROR - Error: Found biblatex control file version 3.8, expected version 3.7.
+This means that your biber (2.16) and biblatex (3.17) versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+[322] Biber.pm:132> INFO - ERRORS: 1
