@@ -2,7 +2,7 @@ classdef Vehicle<handle
     % VEHICLE Summary of this class goes here
 
     properties
-        number
+        number % Number of car.
         width % Length of car.
         state % Position, velocity, and acceleration.
         params % Adaptation time, v_desired, transition_width, form_factor, time_gap, min_gap.
@@ -67,6 +67,28 @@ classdef Vehicle<handle
             newstate = [pos, vel, acc];
             obj.state = [pos, vel, acc];
         end
+        
+        function changeLane = changeLane(obj)
+            % \brief Check and do lane change if possible.
+            % \param obj, car which is doing the lane change.
+            % \returns Updated car after lane change.
+        end
+
+        function checkSafe = checkSafe(obj, carArr)
+            % \brief Check if it is safe to switch to the right or left
+            % lane.
+            % \param obj, car which is getting updated.
+            % \param carArr, array of cars sorted by distance.
+            % \returns Array of lanes that are safe to switch into.
+        end
+        
+        function findIncentive = findIncentive(obj, carArr, laneArr)
+            % \brief Find the utility of changing lane.
+            % \param obj, car where we are finding the utlity of.
+            % \param carArr, array of cars sorted by distance.
+            % \param laneArr, array of lanes that we can switch to.
+            % \returns Best possible lane to switch to.
+        end            
     end
     methods(Static)
         function sortedCars = sortCars(carsArr)
@@ -81,6 +103,21 @@ classdef Vehicle<handle
             end
             [~, I] = sort(carWidthArr, 'descend');
             sortedCars = carsArr(I);
+        end
+
+        function safeCriterion = safeCriterion(v_f_hat, v_a)
+            % \brief Safety criterion for lane changing.
+            % \param v_f_hat, velocity of the follower after lane change.
+            % \parm v_a, velocity of car doing the lane change.
+            % \returns Value of the safety criterion. 
+        end
+
+        function incentiveCriterion = incentiveCriterion(s_a, v_l, v_l_hat)
+            % \brief Incentive condition for lane changing.
+            % \param s_a, gap of the car doing lane change. 
+            % \param v_l, velocity of the leader car before lane change. 
+            % \param v_l_hat, velocity of the leader car after lane change.
+            % \returns Value of the incentive criterion.
         end
     end
 end
