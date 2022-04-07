@@ -88,7 +88,20 @@ classdef Vehicle<handle
             % \param carArr, array of cars sorted by distance.
             % \param laneArr, array of lanes that we can switch to.
             % \returns Best possible lane to switch to.
-        end            
+        end
+
+        function [front,back] = findCar(obj, carArr, laneNum)
+            % \brief Find the next and back cars in the lane that the car
+            % is switching to. 
+            % \param obj, car doing the lane change.
+            % \param carArr, array of cars sorted by distance.
+            % \param laneNum, index of lane we are switching to
+            % \returns The car in front and back of it if the car does a
+            %          lane change. 
+            front = Vehicle.empty(1,1);
+            back = Vehicle.empty(1,1);
+            carPos = obj.state(1);
+        end
     end
     methods(Static)
         function sortedCars = sortCars(carsArr)
