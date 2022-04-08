@@ -142,13 +142,18 @@ classdef Vehicle<handle
                 frontCarOld = obj;
             end
             if leftSafe == 1
+                incentive = obj.incentiveCriterion(frontCarOld,frontCarLeft, delta_a, a_bias, 1, gamma);
+                % TODO
             else 
-                leftIncentive = 9999;
+                leftIncentive = false;
             end
             if rightSafe == 1
+                incentive = obj.incentiveCriterion(frontCarOld,frontCarRight, delta_a, a_bias, 0, gamma);
+                % TODO
             else 
-                rightIncentive = 9999;
+                rightIncentive = false;
             end 
+            % logic for dealing with rightIncentive and leftIncentive
         end
 
         function [front,back,index] = findCar(obj, carArr, laneNum)
