@@ -19,6 +19,32 @@
 
 \refsection{0}
   \datalist[entry]{ynt/global//global/global}
+    \entry{numerics}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f5003f438d27eacbb94f94bace68fd4f}{%
+           family={Stewart},
+           familyi={S\bibinitperiod},
+           given={David\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{f5003f438d27eacbb94f94bace68fd4f}
+      \strng{fullhash}{f5003f438d27eacbb94f94bace68fd4f}
+      \strng{bibnamehash}{f5003f438d27eacbb94f94bace68fd4f}
+      \strng{authorbibnamehash}{f5003f438d27eacbb94f94bace68fd4f}
+      \strng{authornamehash}{f5003f438d27eacbb94f94bace68fd4f}
+      \strng{authorfullhash}{f5003f438d27eacbb94f94bace68fd4f}
+      \field{labelalpha}{Ste11}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-1-611970-70-8}
+      \field{title}{Dynamics with Inequalities}
+      \field{year}{2011}
+    \endentry
     \entry{traffic}{book}{}
       \name{author}{2}{}{%
         {{hash=21d5ad5044c3bd92d3980f5df317324d}{%

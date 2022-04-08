@@ -20,12 +20,17 @@ sorting=ynt
 
 \glsxtrnewsymbol[
  description={position},
- location={(see chapter~\ref{ch1}).}
+ location={[see ch.~\ref{ch1}].}
 ]{x}{\ensuremath{x}}
 \glsxtrnewsymbol[description={velocity}]{v}{\ensuremath{v}}
 \glsxtrnewsymbol[description={acceleration}]{a}{\ensuremath{a}}
 \glsxtrnewsymbol[description={time}]{t}{\ensuremath{t}}
 \glsxtrnewsymbol[description={force}]{F}{\ensuremath{F}}
+\glsxtrnewsymbol[description={gap}]{s}{\ensuremath{s}}
+\glsxtrnewsymbol[description={desired speed (typically 33 m/s)},
+location = {[see ch. ~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
+\glsxtrnewsymbol[description={adaptation time (typically 0.65 s)}]{ta}{\ensuremath{\tau}}
+\glsxtrnewsymbol[description={speed difference sensitivity}]{ga}{\ensuremath{\gamma}}
 
 \title{Investigating Car Following Model}
 \author{Kaeshav Danesh and Kevin Phan}
@@ -38,10 +43,20 @@ sorting=ynt
         Traffic flow dynamics is generally split into either macroscopic models or microscopic models. For this paper, we will focus on car following models which is a type of microscopic model. We first introduce the assumptions and the mathematical description car following model and the numerical scheme used to compute them. Then, we give the full velocity difference model. Finally, we examine different scenarios such as car crashes, phantom traffic, traffic light, and lane changes and analyze the behavior of cars. 
     \end{abstract}
 
+    \newpage
+
     \tableofcontents
+
+    \newpage
 
     \section{Introduction}
     
+    Some questions to answer:
+    \begin{itemize}
+        \item Why are traffic models important?
+        \item At what scale does our model operate at?
+        \item What assumptions are we making?
+    \end{itemize}
 
     \section{General Model}
     \subsection{Mathematical Formulation}\label{ch1}
@@ -87,8 +102,9 @@ sorting=ynt
 
 
     \subsection{Numerical Scheme}
+    \cite{numerics}
     \section{Car Following Model}
-    \subsection{Full Velocity Difference Model}
+    \subsection{Full Velocity Difference Model}\label{ch3.1}
     \section{Examining Different Scenarios}
     \subsection{Car Crash}
     \subsection{Phantom Traffic}
@@ -96,7 +112,7 @@ sorting=ynt
     \subsection{Lane Changes}
     \section{Conclusion}
     \section{Further Remarks}
-    \printunsrtglossary[type=symbols,style=long,title={List of Symbols}]
+    \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
     \newpage 
     \printbibliography
 \end{document}
