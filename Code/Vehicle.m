@@ -70,7 +70,7 @@ classdef Vehicle<handle
 
 
         function newlane = changeLane(obj, index, carArr, maxLane, b_safe, delta_a, a_bias, gamma, x_destination)
-            % \brief Finds best Lane to change to.
+            % \brief Finds best Lane to change to. 
             % \param obj, car which is getting updated.
             % \param index, the index of obj in carArr
             % \param carArr, array of cars sorted by distance.
@@ -122,9 +122,9 @@ classdef Vehicle<handle
                 end
             end
             
-            if leftSafe && leftIncentive
+            if leftSafe && leftIncentive && obj.state(2) > 20
                 newlane = laneNum-1;
-            elseif rightSafe && rightIncentive
+            elseif rightSafe && rightIncentive && obj.state(2) > 20
                 newlane = laneNum+1;
             else
                 newlane = laneNum;
