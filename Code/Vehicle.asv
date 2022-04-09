@@ -68,150 +68,86 @@ classdef Vehicle<handle
             obj.state = [pos, vel, acc];
         end
 
-        function changeLane = changeLane(obj)
-            % \brief Check and do lane change if possible.
-            % \param obj, car which is doing the lane change.
-            % \returns Updated car after lane change.
-        end
 
-        function [leftSafe, rightSafe] = checkSafe(obj, carArr, maxLane, b_safe, gamma)
-            % \brief Check if it is safe to switch to the right or left
-            % lane.
+        function newlane = changeLane(obj, index, carArr, maxLane, b_safe, delta_a, a_bias, gamma, x_destination)
+            % \brief Finds best Lane to change to.
             % \param obj, car which is getting updated.
+            % \param index, the index of obj in carArr
             % \param carArr, array of cars sorted by distance.
             % \param maxLane, maximum number of lanes on the road.
             % \param b_safe, limit for safe deacceleration. 
             % \param gamma, speed difference sensitivity. 
-            % \returns Array of lanes that are safe to switch into.
+            % \param x_destination, the distance to the destination
+            % \returns The best lane to switch to.
             laneNum = obj.lane;
-            rightLaneNum = laneNum + 1;
-            leftLaneNum = laneNum - 1;
-            [~, backRight,~] = obj.findCar(carArr, rightLaneNum);
-            [~, backLeft,~] = obj.findCar(carArr, leftLaneNum);
-            if rightLaneNum == maxLane + 1
+            
+            [frontRight_v, frontRight_gap, backRight_v, backRight_gap] = Vehicle.findGaps(carArr, index, laneNum + 1, x_destination);
+            [frontLeft_v, frontLeft_gap, backLeft_v, backLeft_gap] = Vehicle.findGaps(carArr, index, laneNum - 1, x_destination);
+            [front_v, front_gap, ~, ~] = Vehicle.findGaps(carArr, index, laneNum, x_destination);
+
+            if laneNum == maxLane
                 rightSafe = false;
+                rightIncentive = false;
             else 
-                if isempty(backRight)
+                safeValue = obj.safeCriterion(backRight_v, obj.state(2) ,b_safe,gamma);
+                if backRight_gap > safeValue
                     rightSafe = true;
                 else
-                    safeValue = obj.safeCriterion(backRight,b_safe,gamma);
-                    s_f_new = obj.state(1) - backRight.state(1) - obj.width;
-                    if s_f_new > safeValue 
-                        rightSafe = true;
-                    else 
-                        rightSafe = false; 
-                    end
+                    rightSafe = false;
+                end
+                
+                advValue = obj.incentiveCriterion(front_gap, front_v, frontRight_v, delta_a, a_bias, false, gamma);
+                if frontRight_gap > advValue
+                   rightIncentive = true; 
+                else
+                    rightIncentive = false;
                 end
             end
-            if leftLaneNum == 0 
+            if laneNum == 1
                 leftSafe = false;
+                leftIncentive = false;
             else
-                if isempty(backLeft)
+                safeValue = obj.safeCriterion(backLeft_v, obj.state(2), b_safe, gamma);
+                if backLeft_gap > safeValue
                     leftSafe = true;
                 else
-                    safeValue = obj.safeCriterion(backLeft,b_safe,gamma);
-                    s_f_new = obj.state(1) - backLeft.state(1) - obj.width;
-                    if s_f_new > safeValue 
-                        leftSafe = true;
-                    else 
-                        leftSafe = false; 
-                    end
+                    leftSafe = false;
+                end
+                
+                advValue = obj.incentiveCriterion(front_gap, front_v, frontLeft_v, delta_a, a_bias, true, gamma);
+                if frontLeft_gap > advValue
+                   leftIncentive = true; 
+                else
+                    leftIncentive = false;
                 end
             end
-        end
-
-        function findIncentive = findIncentive(obj, carArr, leftSafe, rightSafe)
-            % \brief Find the utility of changing lane.
-            % \param obj, car where we are finding the utlity of.
-            % \param carArr, array of cars sorted by distance.
-            % \param laneArr, array of lanes that we can switch to.
-            % \returns Best possible lane to switch to.
-            laneNum = obj.lane;
-            rightLaneNum = laneNum + 1;
-            leftLaneNum = laneNum - 1;
-            [frontCarRight, ~, ~] = obj.findCar(carArr, rightLaneNum);
-            [frontCarLeft, ~, ~] = obj.findCar(carArr, leftLaneNum);
-            [frontCarOld, ~, ~] = obj.findCar(carArr, laneNum);
-            if isempty(frontCarRight)
-                frontCarRight = obj;
-            end
-            if isempty(frontCarLeft)
-                frontCarLeft = obj;
-            end
-            if isempty(frontCarOld)
-                frontCarOld = obj;
-            end
-            if leftSafe == 1
-            else 
-                leftIncentive = 9999;
-            end
-            if rightSafe == 1
-            else 
-                rightIncentive = 9999;
-            end 
-            %What to do if both lanes pass criterions
-        end
-
-        function [front,back,index] = findCar(obj, carArr, laneNum)
-            % \brief Find the next and back cars in the lane that the car
-            % is switching to.
-            % \param obj, car changing to laneNum.
-            % \param carsArr, array of cars sorted by distance.
-            % \param laneNum, index of lane we are switching to.
-            % \return front, the car in front of obj after lane change.
-            %         back, the car behind of obj after lane change.
-            %         index, index of obj in carArr 
-            front = Vehicle.empty(1,0);
-            back = Vehicle.empty(1,0);
-            carNum = obj.number;
-            index = 0;
-            for i=1:length(carArr)
-                if carArr(i).number == carNum
-                    index = i;
-                end
-            end
-            frontCars = carArr(1:index - 1);
-            backCars = carArr(index + 1:end);
-
-            if isempty(frontCars)
+            
+            if leftSafe && leftIncentive
+                newlane = laneNum-1;
+            elseif rightSafe && rightIncentive
+                newlane = laneNum+1;
             else
-                for i=length(frontCars):1
-                    if frontCars(i).lane == laneNum
-                        front = frontCars(i);
-                        break
-                    end
-                end
+                newlane = laneNum;
             end
-
-            if isempty(backCars)
-            else
-                for i=1:length(backCars)
-                    if backCars(i).lane == laneNum
-                        back = backCars(i);
-                        break
-                    end
-                end
-            end
+            
+            obj.lane = newlane;
         end
-        function safeCriterion = safeCriterion(obj,backCar,b_safe,gamma)
+
+        function safeCriterion = safeCriterion(obj, v_f_hat, v_a, b_safe,gamma)
             % \brief Safety criterion for lane changing.
             % \param obj, car doing lane change.
             % \param backCar, car behind the car that is doing a lane.
             % \param b_safe, b_safe, limit for safe deacceleration.
             % \param gamma, speed difference sensitivity.
             % \returns Value of the safety criterion.
-            v_f_hat = backCar.state(2);
-            v_a = obj.state(2);
-            tau = backCar.params(1);
+            tau = obj.params(1);
             value = v_f_hat - tau * b_safe + tau * gamma * (v_f_hat - v_a);
-            safeCriterion = backCar.se(value); % not sure if this is right, don't know what car we should use se on
+            safeCriterion = .se(value); % not sure if this is right, don't know what car we should use se on
         end
 
-        function incentiveCriterion = incentiveCriterion(obj,frontCarOld,frontCarNew, delta_a, a_bias, leftLane, gamma)
+        function incentiveCriterion = incentiveCriterion(obj, s_a, v_l, v_l_hat, delta_a, a_bias, leftLane, gamma)
             % \brief Incentive condition for lane changing.
             % \param obj, car doing lane change.
-            % \param frontCarOld, car in front of obj before lane change.
-            % \param frontCarNew, car in front of obj after lane change.
             % \param delta_a, changing threshold.
             % \param a_bias, keep-left directive. 
             % \param leftLane, if 1, then the car is switching to the left
@@ -220,10 +156,7 @@ classdef Vehicle<handle
             if leftLane == 0  %  check if we are in the fast lane 
                 a_bias = -1 * a_bias;
             end
-            s_a = frontCarOld.state(1) - obj.state(1) - frontCarOld.width;
-            v_l = frontCarOld.state(2);
-            v_l_hat = frontCarNew.state(1);
-            tau = frontCarNew.params(1); 
+            tau = obj.params(1); 
             value = obj.v_opt(s_a) + tau * (delta_a + a_bias + gamma * (v_l - v_l_hat)); % not sure if v_opt is correct here
             incentiveCriterion = obj.se(value); % not sure if this is right, don't know what car we should use se on
         end
@@ -258,6 +191,67 @@ classdef Vehicle<handle
             [~, I] = sort(carWidthArr, 'descend');
             sortedCars = carsArr(I);
         end
+        
+        function [front_v, front_gap ,back_v, back_gap] = findGaps(carArr, index, laneNum, x_destination)
+            % \brief Find the next and back cars in the lane that the car
+            % is switching to.
+            % \param obj, car changing to laneNum.
+            % \param carsArr, array of cars sorted by distance.
+            % \param laneNum, index of lane we are searching.
+            % \return front_v, the velocity of the car in front in the lane
+            %         specified by laneNum.
+            %         back_v, the velocity of the car in the back.
+            %         front_gap, the gap between the car at index and the
+            %         car in front.
+            next = index;
+            previous = index;
+            
+            while(1)%Loop that finds the next car
+                if next < 2 %If there are no cars in front
+                    next = index;
+                    break;
+                else
+                    next = next-1;
+                end
+
+                if carArr(next).lane == laneNum
+                    break;
+                end
+            end
+            % set leading vehicle velocity to speed limit if no cars is in front
+            if index == next  % First car.
+                % Find gap using first car's position and destination.
+                % Use velocity of itself.
+                front_gap = x_destination - carArr(index).state(1);
+                front_v = carArr(index).params(2);
+            else % Cars after the first car.
+                % Compute gap and use velocity using the car in front of it.
+                front_gap = carArr(next).state(1) - carArr(next).width - carArr(index).state(1);
+                front_v = carArr(next).state(2);
+            end
+    
+            while(1)% finds the previous car
+                if previous >= length(carArr) %If there are no cars in front
+                    previous = index;
+                    break;
+                else
+                    previous = previous + 1;
+                end
+
+                if carArr(previous).lane == laneNum
+                    break;
+                end
+            end
+            if index == previous  % For the last car, following v is 0.
+                back_v = 0;
+                back_gap = carArr(index).state(1);
+            else % Cars after the last car.
+                back_v = carArr(previous).state(2);
+                back_gap = carArr(index) - carArr(previous) - carArr(index).width;
+            end
+            
+        end
+        
     end
 end
 
