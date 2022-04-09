@@ -167,7 +167,7 @@ classdef Vehicle<handle
             % \param value to substitute in the inverse of v_opt.
             % \return se, value substituted in the verse of v_opt.
             if v < 0
-                se = v;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
+                se = 0;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
             elseif v > obj.params(2)
                 se = obj.params(2);
             else 
@@ -223,7 +223,7 @@ classdef Vehicle<handle
                 % Find gap using first car's position and destination.
                 % Use velocity of itself.
                 front_gap = x_destination - carArr(index).state(1);
-                front_v = carArr(index).params(2);
+                front_v = carArr(index).state(2);
             else % Cars after the first car.
                 % Compute gap and use velocity using the car in front of it.
                 front_gap = carArr(next).state(1) - carArr(next).width - carArr(index).state(1);
