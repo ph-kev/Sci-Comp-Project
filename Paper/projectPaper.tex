@@ -25,11 +25,10 @@ sorting=ynt
 \glsxtrnewsymbol[description={velocity}]{v}{\ensuremath{v}}
 \glsxtrnewsymbol[description={acceleration}]{a}{\ensuremath{a}}
 \glsxtrnewsymbol[description={time}]{t}{\ensuremath{t}}
-\glsxtrnewsymbol[description={force}]{F}{\ensuremath{F}}
 \glsxtrnewsymbol[description={gap}]{s}{\ensuremath{s}}
-\glsxtrnewsymbol[description={desired speed (typically 33 m/s)},
-location = {[see ch. ~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
-\glsxtrnewsymbol[description={adaptation time (typically 0.65 s)}]{ta}{\ensuremath{\tau}}
+\glsxtrnewsymbol[description={desired speed (typically $33$ m/s)},
+location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
+\glsxtrnewsymbol[description={adaptation time (typically $0.65$ s)}]{ta}{\ensuremath{\tau}}
 \glsxtrnewsymbol[description={speed difference sensitivity}]{ga}{\ensuremath{\gamma}}
 
 \title{Investigating Car Following Model}
@@ -53,14 +52,18 @@ location = {[see ch. ~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     
     Some questions to answer:
     \begin{itemize}
-        \item Why are traffic models important?
-        \item At what scale does our model operate at?
-        \item What assumptions are we making?
+        \item Why are traffic models important? Applications?
+        \item At what scale does our model operate at? Macroscopic and microscopic?  
+        \item What assumptions are we making? 
     \end{itemize}
 
     \section{General Model}
     \subsection{Mathematical Formulation}\label{ch1}
-        We follow the mathematical formulation of car following model in \cite{traffic}.
+        We follow the mathematical formulation of car following model in \cite{traffic}. Suppose that there are $n$ cars in the car following model. We index the $1$st car by $1$, the $2$nd car by $2$, the $\alpha$th car by $\alpha$, and so on. The state variables of car $\alpha$ are position $x_\alpha$, velocity $v_\alpha$, and acceleration $a_\alpha$. Furthermore, we are also assuming that the cars in the model has some kind of width. Thus, the position $x_\alpha$ of car $\alpha$ is defined as the front bumper of the car. Another useful variable to define is gap. We define the gap of car $\alpha$ by the difference in distance between the back bumper of car $\alpha - 1$ and the front bumper of car $\alpha$. Mathematically, the gap $s_\alpha$ is defined as 
+        \begin{equation} 
+          s_\alpha = x_{\alpha - 1} - l_{\alpha -1}  - x_{\alpha}
+        \end{equation}
+        where $x_{\alpha - 1}$ is the position of car $\alpha - 1$, $l_{\alpha - 1}$ is the length of car $\alpha - 1$, and $x_\alpha$ is the position of car $\alpha$. We note that the gap is not defined for a car with no cars in front of it. 
         \begin{figure}[H]
             \begin{tikzpicture}[scale=1.55]
                 \draw (-0.3,-0.3) -- (7.3,-0.3);
@@ -99,17 +102,37 @@ location = {[see ch. ~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
             \centering
             \caption{Defining index, position, velocity, and gap of a car.}
         \end{figure}  
+        For simpler notation, we will now refer to the car in front of car $\alpha$ by the leader car $l$. For a single lane, car $l$ is car $\alpha - 1$. However, it is not necessarily true that car $l$ is car $\alpha - 1$ for multiple lanes. 
 
-
+        Taking the time derivatives of $x_\alpha (t)$ and $v_\alpha (t)$ lead to the general coupled differential equation describing velocity and acceleration respectively: 
+        \begin{align} 
+          \odv{x_\alpha(t)}{t} &= v_\alpha (t), \\
+          \odv{v_\alpha (t)}{t} &= a_\alpha (s_\alpha, v_\alpha, v_l).
+        \end{align}
+        Car following models choose a specific acceleration function. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
     \subsection{Numerical Scheme}
+    TODO: Why RK4 versus mixed first order and second order numerical scheme, order we are doing the iterated numerical scheme (doing it from the last car to the first car)
     \cite{numerics}
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     \section{Examining Different Scenarios}
-    \subsection{Car Crash}
-    \subsection{Phantom Traffic}
-    \subsection{Traffic Light}
+    \subsection{Homogeneous Traffic}
+    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration)
+    \subsubsection{Simulation}
+    \subsubsection{Pitfalls}
+    \subsection{Bottleneck}
+    TODO: Add time versus position graph and label the different situations, density graph, analysis 
+    \subsubsection{Implementation}
+    \subsubsection{Simulation}
+    \subsubsection{Analysis}
+    \subsection{Phantom Traffic: Local Perturbation}
+    \subsubsection{Implementation}
+    TODO: Look at how stopping suddenly propagate through the cars. Something about waves? 
     \subsection{Lane Changes}
+    TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
+    \subsubsection{Implementation}
+    \subsubsection{Simulation}
+    \subsubsection{Analysis}
     \section{Conclusion}
     \section{Further Remarks}
     \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
