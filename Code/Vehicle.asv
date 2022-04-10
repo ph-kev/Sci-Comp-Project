@@ -70,7 +70,7 @@ classdef Vehicle<handle
 
 
         function newlane = changeLane(obj, index, carArr, maxLane, b_safe, delta_a, a_bias, gamma, x_destination)
-            % \brief Finds best Lane to change to.
+            % \brief Finds best Lane to change to. 
             % \param obj, car which is getting updated.
             % \param index, the index of obj in carArr
             % \param carArr, array of cars sorted by distance.
@@ -122,9 +122,9 @@ classdef Vehicle<handle
                 end
             end
             
-            if leftSafe && leftIncentive
+            if leftSafe && leftIncentive && obj.state(2) > 20
                 newlane = laneNum-1;
-            elseif rightSafe && rightIncentive
+            elseif rightSafe && rightIncentive && obj.state(2) > 20
                 newlane = laneNum+1;
             else
                 newlane = laneNum;
@@ -142,7 +142,7 @@ classdef Vehicle<handle
             % \returns Value of the safety criterion.
             tau = obj.params(1);
             value = v_f_hat - tau * b_safe + tau * gamma * (v_f_hat - v_a);
-            safeCriterion = .se(value); % not sure if this is right, don't know what car we should use se on
+            safeCriterion = obj.se(value); % not sure if this is right, don't know what car we should use se on
         end
 
         function incentiveCriterion = incentiveCriterion(obj, s_a, v_l, v_l_hat, delta_a, a_bias, leftLane, gamma)
@@ -167,9 +167,9 @@ classdef Vehicle<handle
             % \param value to substitute in the inverse of v_opt.
             % \return se, value substituted in the verse of v_opt.
             if v < 0
-                se = v;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
+                se = 0;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
             elseif v > obj.params(2)
-                se = obj.params(2);
+                se = v;  % might need to change this back to o
             else 
                 s_0 = obj.params(6);
                 T = obj.params(5);
@@ -221,9 +221,8 @@ classdef Vehicle<handle
             % set leading vehicle velocity to speed limit if no cars is in front
             if index == next  % First car.
                 % Find gap using first car's position and destination.
-                % Use velocity of itself.
                 front_gap = x_destination - carArr(index).state(1);
-                front_v = carArr(index).params(2);
+                front_v = 0;
             else % Cars after the first car.
                 % Compute gap and use velocity using the car in front of it.
                 front_gap = carArr(next).state(1) - carArr(next).width - carArr(index).state(1);
@@ -247,7 +246,7 @@ classdef Vehicle<handle
                 back_gap = carArr(index).state(1);
             else % Cars after the last car.
                 back_v = carArr(previous).state(2);
-                back_gap = carArr(index) - carArr(previous) - carArr(index).width;
+                back_gap = carArr(index).state(1) - carArr(previous).state(1) - carArr(index).width;
             end
             
         end

@@ -169,7 +169,7 @@ classdef Vehicle<handle
             if v < 0
                 se = 0;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
             elseif v > obj.params(2)
-                se = obj.params(2);
+                se = v;  % might need to change this back to obj.params(2)
             else 
                 s_0 = obj.params(6);
                 T = obj.params(5);
@@ -221,7 +221,6 @@ classdef Vehicle<handle
             % set leading vehicle velocity to speed limit if no cars is in front
             if index == next  % First car.
                 % Find gap using first car's position and destination.
-                % Use velocity of itself.
                 front_gap = x_destination - carArr(index).state(1);
                 front_v = 0;
             else % Cars after the first car.
