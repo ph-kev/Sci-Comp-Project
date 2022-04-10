@@ -107,12 +107,31 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
         Taking the time derivatives of $x_\alpha (t)$ and $v_\alpha (t)$ lead to the general coupled differential equation describing velocity and acceleration respectively: 
         \begin{align} 
           \odv{x_\alpha(t)}{t} &= v_\alpha (t), \\
-          \odv{v_\alpha (t)}{t} &= a_\alpha (s_\alpha, v_\alpha, v_l).
+          \odv{v_\alpha (t)}{t} &= a_{\rm mic} (s_\alpha, v_\alpha, v_l).
         \end{align}
-        Car following models choose a specific acceleration function. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
+        Each car following model has a specific acceleration function: $a_{\rm mic}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
     \subsection{Numerical Scheme}
-    TODO: Why RK4 versus mixed first order and second order numerical scheme, order we are doing the iterated numerical scheme (doing it from the last car to the first car)
-    \cite{numerics}
+        TODO: Explain differential equations.
+
+    Higher order methods all assume higher orders of smoothness in the differential equation and its solution.
+    Our model is only smooth to first order because suddenly changes in acceleration is common, for example, during lane changes. 
+    So, using a high order method like the fourth order Runge-Kutta could be worse than a simpler first order method.
+
+    Then, our options are either the forward or backwards (implicit) Euler methods. 
+    We are using the forward Euler method because for small timesteps, $\Delta t$, we can assume constant acceleration within $\Delta t$. 
+    The changes in acceleration between timesteps could be treated as a reaction time (not sure)? 
+
+    Implementing the forwards Euler method scheme for a car following model gives us two coupled differential equations for each of our states:
+
+    \begin{align}
+        v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t,\\
+        x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t,
+    \end{align}
+    where $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in  section(\ref{ch3.1}).
+
+    TODO:  Order we are doing the iterated numerical scheme (doing it from the last car to the first car)
+    
+    To learn more, see \cite{numerics}.
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     \section{Examining Different Scenarios}
