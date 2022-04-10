@@ -223,7 +223,7 @@ classdef Vehicle<handle
                 % Find gap using first car's position and destination.
                 % Use velocity of itself.
                 front_gap = x_destination - carArr(index).state(1);
-                front_v = carArr(index).state(2);
+                front_v = 0;
             else % Cars after the first car.
                 % Compute gap and use velocity using the car in front of it.
                 front_gap = carArr(next).state(1) - carArr(next).width - carArr(index).state(1);
