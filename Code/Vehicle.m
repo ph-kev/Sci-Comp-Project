@@ -122,9 +122,9 @@ classdef Vehicle<handle
                 end
             end
             
-            if leftSafe && leftIncentive && obj.state(2) > 20
+            if leftSafe && leftIncentive 
                 newlane = laneNum-1;
-            elseif rightSafe && rightIncentive && obj.state(2) > 20
+            elseif rightSafe && rightIncentive
                 newlane = laneNum+1;
             else
                 newlane = laneNum;
@@ -157,8 +157,8 @@ classdef Vehicle<handle
                 a_bias = -1 * a_bias;
             end
             tau = obj.params(1); 
-            value = obj.v_opt(s_a) + tau * (delta_a + a_bias + gamma * (v_l - v_l_hat)); % not sure if v_opt is correct here
-            incentiveCriterion = obj.se(value); % not sure if this is right, don't know what car we should use se on
+            value =  tau * (delta_a + a_bias + gamma * (v_l - v_l_hat)); % not sure if v_opt is correct here
+            incentiveCriterion = s_a + obj.se(value); % not sure if this is right, don't know what car we should use se on
         end
 
         function se = se(obj,v)
