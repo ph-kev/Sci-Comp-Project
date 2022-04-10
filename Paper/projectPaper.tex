@@ -111,15 +111,15 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
         \end{align}
         Each car following model has a specific acceleration function: $a_{\rm mic}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
     \subsection{Numerical Scheme}
-        TODO: Explain differential equations.
-
-    Higher order methods all assume higher orders of smoothness in the differential equation and its solution.
+    The standard way of numerically solving a system of coupled differential equations would be to use a fourth order Runge Kutta method.
+    However, higher order methods all assume higher orders of smoothness in the differential equation and its solution [\cite{numerics}].
     Our model is only smooth to first order because suddenly changes in acceleration is common, for example, during lane changes. 
-    So, using a high order method like the fourth order Runge-Kutta could be worse than a simpler first order method.
+    So, using a high order method could be worse than a simple first order method.
 
-    Then, our options are either the forward or backwards (implicit) Euler methods. 
-    We are using the forward Euler method because for small timesteps, $\Delta t$, we can assume constant acceleration within $\Delta t$. 
-    The changes in acceleration between timesteps could be treated as a reaction time (not sure)? 
+    Among first order methods, our options are either the forward or backwards (implicit) Euler methods. 
+    The main difference between these methods is that the backwards Euler method involves solving an implicit equation and is generally more stable.
+
+    We are using the forward Euler method because we expect our solution to be stable and solving an implicit equation every timestep would add extra complexity to our Implementation.
 
     Implementing the forwards Euler method scheme for a car following model gives us two coupled differential equations for each of our states:
 
@@ -129,9 +129,8 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     \end{align}
     where $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in  section(\ref{ch3.1}).
 
-    TODO:  Order we are doing the iterated numerical scheme (doing it from the last car to the first car)
-    
-    To learn more, see \cite{numerics}.
+    When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each timestep, it would be easier to start from the backmost car and work up. This allows us to use the most recent velocity value from the leading car.     
+
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     \section{Examining Different Scenarios}
