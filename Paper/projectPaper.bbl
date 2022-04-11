@@ -79,6 +79,50 @@
       \field{title}{Traffic Flow Dynamics: Data, Models and Simulation}
       \field{year}{2013}
     \endentry
+    \entry{hisTraffic}{article}{}
+      \name{author}{4}{}{%
+        {{hash=92296c5f6cd4d442320ade57182d03e1}{%
+           family={{van Wageningen-Kessels}},
+           familyi={v\bibinitperiod},
+           given={Femke},
+           giveni={F\bibinitperiod}}}%
+        {{hash=9d025876fdcf718cc38c5cf436df265e}{%
+           family={{van Lint}},
+           familyi={v\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod}}}%
+        {{hash=936396ae3991d8ccc38f9b171b522e47}{%
+           family={Vuik},
+           familyi={V\bibinitperiod},
+           given={Kees},
+           giveni={K\bibinitperiod}}}%
+        {{hash=d5615764e15dbb9b2d463dc17bd7f9ce}{%
+           family={Hoogendoorn},
+           familyi={H\bibinitperiod},
+           given={Serge},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{68e53908843e7c54f1d32bc6d1439ab8}
+      \strng{fullhash}{da40c5727bdfcde1e215068f10972d14}
+      \strng{bibnamehash}{68e53908843e7c54f1d32bc6d1439ab8}
+      \strng{authorbibnamehash}{68e53908843e7c54f1d32bc6d1439ab8}
+      \strng{authornamehash}{68e53908843e7c54f1d32bc6d1439ab8}
+      \strng{authorfullhash}{da40c5727bdfcde1e215068f10972d14}
+      \field{labelalpha}{van+15}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{EURO Journal on Transportation and Logistics}
+      \field{title}{Genealogy of traffic flow models}
+      \field{volume}{4}
+      \field{year}{2015}
+      \field{pages}{445\bibrangedash 473}
+      \range{pages}{29}
+      \verb{doi}
+      \verb https://doi.org/10.1007/s13676-014-0045-5
+      \endverb
+    \endentry
   \enddatalist
 \endrefsection
 \endinput

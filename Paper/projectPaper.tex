@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{float}
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix}
 \usepackage[symbols,nogroupskip,record]{glossaries-extra}
 \usepackage[
@@ -36,7 +37,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     \maketitle
 
     \begin{abstract}
-        Traffic flow dynamics is generally split into either macroscopic models or microscopic models. For this paper, we will focus on car following models which is a type of microscopic model. We first introduce the assumptions and the mathematical description car following model and the numerical scheme used to compute them. Then, we give the full velocity difference model. Finally, we examine different scenarios such as car crashes, phantom traffic, traffic light, and lane changes and analyze the behavior of cars. 
+        Traffic flow dynamics is generally split into either macroscopic models or microscopic models. For this paper, we will focus on car following models which is a type of microscopic model. We first introduce the assumptions and the mathematical description car following model and the numerical scheme used to compute them. Then, we give the full velocity difference model. Finally, we examine different scenarios such as bottlenecks, phantom traffic, and lane changes and analyze the behavior of cars. 
     \end{abstract}
 
     \newpage
@@ -46,21 +47,25 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     \newpage
 
     \section{Introduction}
-    
+    How does a bottleneck affect a series of vehicles? How do a traffic jam propagate through a series of vehicles? What impact does changing a road from multiple lanes to one lane have a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
+
+    Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by treating them as entire unit. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete or continuous variables, and deterministic or stochastic process. Some applications of traffic flow models include simulating traffic, optimizing traffic lights, and calculating carbon emissions from traffic. 
+
+    Our paper will focus only on the microscopic model called the Full Velocity Difference model. Using this model, we will explore scenarios including bottlenecks, phantom traffic, and lane changes. From this, we will analyze state variables including position, velocity, and acceleration, and other metrics such as density and flow rate. 
     Some questions to answer:
-    \begin{itemize}
-        \item Why are traffic models important? Applications?
-        \item At what scale does our model operate at? Macroscopic and microscopic?  
-        \item What assumptions are we making? 
-    \end{itemize}
+    % \begin{itemize}
+    %     \item Why are traffic models important? Applications?
+    %     \item At what scale does our model operate at? Macroscopic and %     microscopic?  
+    %     \item What assumptions are we making? 
+    % \end{itemize}
 
     \section{General Model}
     \subsection{Mathematical Formulation}\label{ch1}
-        We follow the mathematical formulation of car following model in \S 10.2 of \cite{traffic}. Suppose that there are $n$ cars in the simulation using the car following model. We index the $1$st car by $1$, the $2$nd car by $2$, the $\alpha$th car by $\alpha$, and so on. The state variables of car $\alpha$ are position $x_\alpha$, velocity $v_\alpha$, and acceleration $a_\alpha$. Furthermore, we are also assuming that the cars in the model has some kind of width. Thus, the position $x_\alpha$ of car $\alpha$ is defined as the front bumper of the car. Another useful variable to define is gap. We define the gap of car $\alpha$ by the difference in distance between the back bumper of car $\alpha - 1$ and the front bumper of car $\alpha$. Mathematically, the gap $s_\alpha$ is defined as 
+        We follow the mathematical formulation of car following model in \S 10.2 of \cite{traffic}. Suppose that there are $n$ vehicles in the simulation using the car following model. We index the $1$st vehicle by $1$, the $2$nd car by $2$, the $\alpha$th car by $\alpha$, and so on. The state variables of vehicle $\alpha$ are position $x_\alpha$, velocity $v_\alpha$, and acceleration $a_\alpha$. Furthermore, we are also assuming that the vehicles in the model has a length $l$. The position $x_\alpha$ of car $\alpha$ is defined as the front bumper of the car. Another useful variable to define is gap. We define the gap of car $\alpha$ by the difference in distance between the back bumper of car $\alpha - 1$ and the front bumper of car $\alpha$. Mathematically, the gap $s_\alpha$ is defined as 
         \begin{equation} 
           s_\alpha = x_{\alpha - 1} - l_{\alpha -1}  - x_{\alpha}
         \end{equation}
-        where $x_{\alpha - 1}$ is the position of car $\alpha - 1$, $l_{\alpha - 1}$ is the length of car $\alpha - 1$, and $x_\alpha$ is the position of car $\alpha$. We note that the gap is not defined for a car with no cars in front of it. 
+        where $x_{\alpha - 1}$ is the position of car $\alpha - 1$, $l_{\alpha - 1}$ is the length of car $\alpha - 1$, and $x_\alpha$ is the position of car $\alpha$. We note that the gap is not defined for a vehicle with no vehicles in front of it. 
         \begin{figure}[H]
             \begin{tikzpicture}[scale=1.55]
                 \draw (-0.3,-0.3) -- (7.3,-0.3);
@@ -99,7 +104,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
             \centering
             \caption{Defining index, position, velocity, and gap of a car.}
         \end{figure}  
-        For simpler notation, we will now refer to the car in front of car $\alpha$ by the leader car $l$. For a single lane, car $l$ is car $\alpha - 1$. However, it is not necessarily true that car $l$ is car $\alpha - 1$ for multiple lanes. 
+        For simpler notation, we will now refer to the vehicle in front of vehicle $\alpha$ by the leader vehicle $l$. For a single lane, car $l$ is vehicle $\alpha - 1$. However, it is not necessarily true that vehicle $l$ is vehicle $\alpha - 1$ for multiple lanes. 
 
         Taking the time derivatives of $x_\alpha (t)$ and $v_\alpha (t)$ lead to the general coupled differential equation describing velocity and acceleration respectively: 
         \begin{align} 
@@ -128,7 +133,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
 
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
-    We followed the details of the Full Velocity Difference Model in The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
+    We followed the details of the Full Velocity Difference Model in \S 10.6 and \S 10.7 of [\cite{traffic}]. The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
     \begin{equation} 
       a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s) - v_\alpha}{\tau} - \gamma \Delta v 
     \end{equation}
@@ -140,10 +145,20 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     \end{equation}
     where $v_0$ is the desired speed, $s_0$ is the minimum distance gap, and $T$ is the time gap. 
 
+    Typical parameters for highway traffic for the FVDM is given in the table below. 
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tabular}{ c c } 
+        Parameter & Value \\
+        \hline
+        $v_0$ & yes \\
+        \end{tabular}
+        \end{center}
+    \end{figure}
     TODO: Include a graph of $v_{\rm opt}$, include typical parameters, look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?), explanation of the parameters and what they mean 
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
-    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration)
+    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration) 
     \subsubsection{Simulation}
     \subsubsection{Pitfalls}
     \subsection{Bottleneck}
