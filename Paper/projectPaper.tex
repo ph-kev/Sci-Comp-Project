@@ -18,14 +18,11 @@ sorting=ynt
 ]{biblatex}
 \addbibresource{references.bib}
 
-\glsxtrnewsymbol[
- description={position},
- location={[see ch.~\ref{ch1}].}
-]{x}{\ensuremath{x}}
-\glsxtrnewsymbol[description={velocity}]{v}{\ensuremath{v}}
-\glsxtrnewsymbol[description={acceleration}]{a}{\ensuremath{a}}
-\glsxtrnewsymbol[description={time}]{t}{\ensuremath{t}}
-\glsxtrnewsymbol[description={gap}]{s}{\ensuremath{s}}
+\glsxtrnewsymbol[description={position},location={[see ch.~\ref{ch1}].}]{x}{\ensuremath{x}}
+\glsxtrnewsymbol[description={velocity},location={[see ch.~\ref{ch1}].}]{v}{\ensuremath{v}}
+\glsxtrnewsymbol[description={acceleration},location={[see ch.~\ref{ch1}].}]{a}{\ensuremath{a}}
+\glsxtrnewsymbol[description={time},location={[see ch.~\ref{ch1}].}]{t}{\ensuremath{t}}
+\glsxtrnewsymbol[description={gap},location={[see ch.~\ref{ch1}].}]{s}{\ensuremath{s}}
 \glsxtrnewsymbol[description={desired speed (typically $33$ m/s)},
 location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
 \glsxtrnewsymbol[description={adaptation time (typically $0.65$ s)}]{ta}{\ensuremath{\tau}}
@@ -59,7 +56,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
 
     \section{General Model}
     \subsection{Mathematical Formulation}\label{ch1}
-        We follow the mathematical formulation of car following model in \cite{traffic}. Suppose that there are $n$ cars in the car following model. We index the $1$st car by $1$, the $2$nd car by $2$, the $\alpha$th car by $\alpha$, and so on. The state variables of car $\alpha$ are position $x_\alpha$, velocity $v_\alpha$, and acceleration $a_\alpha$. Furthermore, we are also assuming that the cars in the model has some kind of width. Thus, the position $x_\alpha$ of car $\alpha$ is defined as the front bumper of the car. Another useful variable to define is gap. We define the gap of car $\alpha$ by the difference in distance between the back bumper of car $\alpha - 1$ and the front bumper of car $\alpha$. Mathematically, the gap $s_\alpha$ is defined as 
+        We follow the mathematical formulation of car following model in \S 10.2 of \cite{traffic}. Suppose that there are $n$ cars in the simulation using the car following model. We index the $1$st car by $1$, the $2$nd car by $2$, the $\alpha$th car by $\alpha$, and so on. The state variables of car $\alpha$ are position $x_\alpha$, velocity $v_\alpha$, and acceleration $a_\alpha$. Furthermore, we are also assuming that the cars in the model has some kind of width. Thus, the position $x_\alpha$ of car $\alpha$ is defined as the front bumper of the car. Another useful variable to define is gap. We define the gap of car $\alpha$ by the difference in distance between the back bumper of car $\alpha - 1$ and the front bumper of car $\alpha$. Mathematically, the gap $s_\alpha$ is defined as 
         \begin{equation} 
           s_\alpha = x_{\alpha - 1} - l_{\alpha -1}  - x_{\alpha}
         \end{equation}
@@ -109,7 +106,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
           \odv{x_\alpha(t)}{t} &= v_\alpha (t), \\
           \odv{v_\alpha (t)}{t} &= a_{\rm mic} (s_\alpha, v_\alpha, v_l).
         \end{align}
-        Each car following model has a specific acceleration function: $a_{\rm mic}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
+        Each car following model has a specific acceleration function: $a_{\rm mic}\footnote{We use $a_{\rm mic}$ for the acceleration function and $a$ to describe the state variable acceleration.}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
     \subsection{Numerical Scheme}
     The standard way of numerically solving a system of coupled differential equations would be to use a fourth order Runge Kutta method.
     However, higher order methods all assume higher orders of smoothness in the differential equation and its solution [\cite{numerics}].
@@ -131,6 +128,19 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
 
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
+    We followed the details of the Full Velocity Difference Model in The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
+    \begin{equation} 
+      a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s) - v_\alpha}{\tau} - \gamma \Delta v 
+    \end{equation}
+    where $v_{\rm opt}$ is the optimal velocity function, $\tau$ is the speed adaptation time, $\gamma$ is the speed difference sensitivity, and $\Delta v = v_\alpha - v_l$ is the difference between in velocities of the car $\alpha$ and the leader car.
+    
+    A simple choice for $v_{\rm opt}$ is 
+    \begin{equation} 
+      v_{\rm opt} (s) = \max \left( 0, \min \left( v_0, \frac{s-s_0}{T} \right) \right)
+    \end{equation}
+    where $v_0$ is the desired speed, $s_0$ is the minimum distance gap, and $T$ is the time gap. 
+
+    TODO: Include a graph of $v_{\rm opt}$, include typical parameters, look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?), explanation of the parameters and what they mean 
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
     TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration)
@@ -146,6 +156,8 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     TODO: Look at how stopping suddenly propagate through the cars. Something about waves? 
     \subsection{Lane Changes}
     TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
+    \subsubsection{Implementation}
+    \subsection{Multi-lanes Bottleneck}
     \subsubsection{Implementation}
     \subsubsection{Simulation}
     \subsubsection{Analysis}
