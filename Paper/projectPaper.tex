@@ -116,18 +116,16 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     Our model is only smooth to first order because suddenly changes in acceleration is common, for example, during lane changes. 
     So, using a high order method could be worse than a simple first order method.
 
-    Among first order methods, our options are either the forward or backwards (implicit) Euler methods. 
-    The main difference between these methods is that the backwards Euler method involves solving an implicit equation and is generally more stable.
+    Among first order methods, our options are either the forward or backwards (implicit) Euler methods. The main difference between these methods is that the backwards Euler method involves solving an implicit equation and is generally more stable.
 
-    We are using the forward Euler method because we expect our solution to be stable and solving an implicit equation every timestep would add extra complexity to our Implementation.
+    We are using the forward Euler method because we expect our solution to be stable and solving an implicit equation every timestep would add extra complexity to our implementation.
 
     Implementing the forwards Euler method scheme for a car following model gives us two coupled differential equations for each of our states:
-
     \begin{align}
         v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t,\\
         x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t,
     \end{align}
-    where $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in  section(\ref{ch3.1}).
+    where $\delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in section(\ref{ch3.1}).
 
     When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each timestep, it would be easier to start from the backmost car and work up. This allows us to use the most recent velocity value from the leading car.     
 
