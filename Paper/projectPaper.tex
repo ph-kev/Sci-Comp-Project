@@ -148,21 +148,34 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
     Typical parameters for highway traffic for the FVDM is given in the table below. 
     \begin{figure}[H]
       \begin{center}
-        \begin{tabular}{ c c } 
+        \begin{tabular}{l c c } 
         Parameter & Value \\
         \hline
-        $v_0$ & yes \\
+        $v_0$, desired speed & $33.\bar{3}$ m/s \\
+        $s_0$, minimum distance gap & $3$ m \\
+        $T$, time gap & $1.4$ s \\
+        $\tau$, speed adaptation time & $5$ s \\
+        $\gamma$, speed difference sensitivity & $0.6$ s$^{-1}$ \\
         \end{tabular}
         \end{center}
+        \caption{Typical parameters for highway traffic for the FVDM.}
     \end{figure}
-    TODO: Include a graph of $v_{\rm opt}$, include typical parameters, look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?), explanation of the parameters and what they mean 
+    
+    We now examine how different parameters of the optimal velocity function affect the graph. 
+    \begin{figure}[H]
+        \includegraphics[width=11cm]{vopt_versus_s.pdf}
+        \centering
+    \end{figure}
+    Since we are taking the minimum of $v_0$ and $(s-s_0)/T$, $v_{\rm opt}$ attain a maximum of $v_0$. This means that the optimal velocity of a vehicle is the desired speed $v_0$. Furthermore, $v_{\rm opt}$ is $0$ on the interval $0 \leq s \leq s_0$ which means that a vehicle will not move if the vehicle's gap is $s_0$ or less. This prevents car crashes from occurring for most cases.  
+
+    TODO: Include a graph of $v_{\rm opt}$, look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?), explanation of the parameters and what they mean 
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
     TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration) 
     \subsubsection{Simulation}
     \subsubsection{Pitfalls}
     \subsection{Bottleneck}
-    TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this 
+    TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
     \subsubsection{Implementation}
     \subsubsection{Simulation}
     \subsubsection{Analysis}
