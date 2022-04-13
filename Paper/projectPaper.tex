@@ -10,6 +10,8 @@
 \usepackage{tikz}
 \usepackage{float}
 \usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix}
 \usepackage[symbols,nogroupskip,record]{glossaries-extra}
 \usepackage[
@@ -19,15 +21,21 @@ sorting=ynt
 ]{biblatex}
 \addbibresource{references.bib}
 
-\glsxtrnewsymbol[description={position},location={[see ch.~\ref{ch1}].}]{x}{\ensuremath{x}}
-\glsxtrnewsymbol[description={velocity},location={[see ch.~\ref{ch1}].}]{v}{\ensuremath{v}}
-\glsxtrnewsymbol[description={acceleration},location={[see ch.~\ref{ch1}].}]{a}{\ensuremath{a}}
-\glsxtrnewsymbol[description={time},location={[see ch.~\ref{ch1}].}]{t}{\ensuremath{t}}
-\glsxtrnewsymbol[description={gap},location={[see ch.~\ref{ch1}].}]{s}{\ensuremath{s}}
+\newfloat{algorithm}{H}{lop} % flaot the alg environment
+
+\glsxtrnewsymbol[description={position},location={[see sec.~\ref{ch1}].}]{x}{\ensuremath{x}}
+\glsxtrnewsymbol[description={velocity},location={[see sec.~\ref{ch1}].}]{v}{\ensuremath{v}}
+\glsxtrnewsymbol[description={acceleration},location={[see sec.~\ref{ch1}].}]{a}{\ensuremath{a}}
+\glsxtrnewsymbol[description={time},location={[see sec.~\ref{ch1}].}]{t}{\ensuremath{t}}
+\glsxtrnewsymbol[description={gap},location={[see sec.~\ref{ch1}].}]{s}{\ensuremath{s}}
 \glsxtrnewsymbol[description={desired speed (typically $33$ m/s)},
 location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
-\glsxtrnewsymbol[description={adaptation time (typically $0.65$ s)}]{ta}{\ensuremath{\tau}}
-\glsxtrnewsymbol[description={speed difference sensitivity}]{ga}{\ensuremath{\gamma}}
+\glsxtrnewsymbol[description={desired speed (typically $3$ m)},
+location = {[see sec.~\ref{ch3.1}]}]{s_0}{\ensuremath{s_0}}
+\glsxtrnewsymbol[description={desired speed (typically $1.4$ s)},
+location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
+\glsxtrnewsymbol[description={adaptation time (typically $5$ s$^{-1}$)}]{tau}{\ensuremath{\tau}}
+\glsxtrnewsymbol[description={speed difference sensitivity (typically $0.6$ s$^{-1}$)}]{ga}{\ensuremath{\gamma}}
 
 \title{Investigating Car Following Model}
 \author{Kaeshav Danesh and Kevin Phan}
@@ -112,7 +120,7 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
           \odv{v_\alpha (t)}{t} &= a_{\rm mic} (s_\alpha, v_\alpha, v_l).
         \end{align}
         Each car following model has a specific acceleration function: $a_{\rm mic}\footnote{We use $a_{\rm mic}$ for the acceleration function and $a$ to describe the state variable acceleration.}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
-    \subsection{Numerical Scheme}
+    \subsection{Numerical Scheme}\label{num_sch}
     The standard way of numerically solving a system of coupled differential equations would be to use a fourth order Runge Kutta method.
     However, higher order methods all assume higher orders of smoothness in the differential equation and its solution [\cite{numerics}].
     Our model is only smooth to first order because suddenly changes in acceleration is common, for example, during lane changes. 
@@ -124,17 +132,17 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
 
     Implementing the forwards Euler method scheme for a car following model gives us two coupled differential equations for each of our states:
     \begin{align}
-        v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t,\\
-        x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t,
+        v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t, \label{num_eq1}\\
+        x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t \label{num_eq2},
     \end{align}
-    where $\delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in section(\ref{ch3.1}).
+    where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used. This acceleration function is described in section(\ref{ch3.1}).
 
     When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each timestep, it would be easier to start from the backmost car and work up. This allows us to use the most recent velocity value from the leading car.     
 
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     We followed the details of the Full Velocity Difference Model in \S 10.6 and \S 10.7 of [\cite{traffic}]. The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
-    \begin{equation} 
+    \begin{equation}\label{a_mic}
       a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s) - v_\alpha}{\tau} - \gamma \Delta v 
     \end{equation}
     where $v_{\rm opt}$ is the optimal velocity function, $\tau$ is the speed adaptation time, $\gamma$ is the speed difference sensitivity, and $\Delta v = v_\alpha - v_l$ is the difference between in velocities of the car $\alpha$ and the leader car.
@@ -166,12 +174,28 @@ location = {[see ch.~\ref{ch3.1}]}]{v0}{\ensuremath{v_0}}
         \includegraphics[width=11cm]{vopt_versus_s.pdf}
         \centering
     \end{figure}
-    Since we are taking the minimum of $v_0$ and $(s-s_0)/T$, $v_{\rm opt}$ attain a maximum of $v_0$. This means that the optimal velocity of a vehicle is the desired speed $v_0$. Furthermore, $v_{\rm opt}$ is $0$ on the interval $0 \leq s \leq s_0$ which means that a vehicle will not move if the vehicle's gap is $s_0$ or less. This prevents car crashes from occurring for most cases.  
-
-    TODO: Include a graph of $v_{\rm opt}$, look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?), explanation of the parameters and what they mean 
+    Since we are taking the minimum of $v_0$ and $(s-s_0)/T$, $v_{\rm opt}$ attain a maximum of $v_0$. This means that the optimal velocity of a vehicle is the desired speed $v_0$. Furthermore, $v_{\rm opt}$ is $0$ on the interval $0 \leq s \leq s_0$ which means that a vehicle will not move if the vehicle's gap is $s_0$ or less. This prevents car crashes from occurring for most cases. Lastly, the time gap $T$ determine the slope of the line. Higher values of $T$ means that the car's optimal velocity will be reached for higher value of $s$.
+    
+    Analyzing equation (\ref{a_mic}), $v_{\rm opt} (s) - v_\alpha$ is positive if $v_{\rm opt} (s) > v_\alpha$. The car has not reached its optimal velocity and so, acceleration is positive. Similarly, if  $v_{\rm opt} (s) < v_\alpha$, $v_{\rm opt} (s) - v_\alpha$ is negative and so, the car is decelerating to reach its optimal velocity. If $v_{\rm opt} (s) = v_\alpha$, then $a_{\rm mic} = 0$. The speed adaptation time $\tau$ determine how fast the car accelerate or decelerate and thus, affect the time it takes for the car to reach its optimal velocity. The term $-\gamma \Delta v$ is positive if $v_\alpha < v_l$ and negative if $v_\alpha > v_l$. This leads to more acceleration if the car is trying to catch to the leader car and less acceleration if the car is trying to slow down due to the leader car's slower velocity. 
+  
+    \subsection{Implementation}
+    We first initialize initial conditions for the state variables of the vehicles. We store the vehicles in an array and iterate through them. As described in section (\ref{num_sch}), we iterate through the vehicles starting with the last vehicle with respect to position and go through in ascending order. We update the state variables of the cars using equations (\ref{num_eq1}), (\ref{num_eq2}), and (\ref{a_mic}). We repeat this process for the number of iterations required. 
+    \begin{algorithm}
+      \caption{Simplified algorithm for FDVM}\label{alg:car-following}
+      \begin{algorithmic}
+      \Require Initial state variables for each car. 
+      \Require Car, an array of cars.
+      \For{$i = 1:$numsteps}{}
+      \For{$j =$ length(cars):$-1$:$1$}{}
+        \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
+        \EndFor
+      \EndFor
+      \end{algorithmic}
+      \end{algorithm}
+    We still have not addressed the situation with the first car when updating its state variables. Equation (\ref{a_mic}) need values for the car's gap $s_\alpha$ we are updating and the velocity of the leader car $v_l$. However, the first car does not have a leader car. To resolve this, we impose a destination for the cars. We use this value in the calculation of gap $s_\alpha$. Secondly, we set $v_l = 0$. This resolve the problem of updating the state variables of the first car. 
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
-    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration) 
+    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration), Look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?)
     \subsubsection{Simulation}
     \subsubsection{Pitfalls}
     \subsection{Bottleneck}
