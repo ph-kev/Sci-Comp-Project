@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
-[1] Config.pm:310> INFO - Logfile is 'projectPaper.blg'
-[168] biber-MSWIN64:340> INFO - === 
-[233] Biber.pm:418> INFO - Reading 'projectPaper.bcf'
-[397] Biber.pm:972> INFO - Found 3 citekeys in bib section 0
-[417] Biber.pm:4383> INFO - Processing section 0
-[433] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
-[531] bibtex.pm:1713> INFO - LaTeX decoding ...
-[543] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
-[634] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[634] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[634] Biber.pm:4203> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
-[634] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[638] bbl.pm:654> INFO - Writing 'projectPaper.bbl' with encoding 'UTF-8'
-[640] bbl.pm:757> INFO - Output to projectPaper.bbl
+[0] Config.pm:310> INFO - Logfile is 'projectPaper.blg'
+[129] biber-MSWIN64:340> INFO - === 
+[173] Biber.pm:418> INFO - Reading 'projectPaper.bcf'
+[303] Biber.pm:972> INFO - Found 3 citekeys in bib section 0
+[320] Biber.pm:4383> INFO - Processing section 0
+[334] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
+[418] bibtex.pm:1713> INFO - LaTeX decoding ...
+[433] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
+[529] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[529] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[529] Biber.pm:4203> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
+[529] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[533] bbl.pm:654> INFO - Writing 'projectPaper.bbl' with encoding 'UTF-8'
+[536] bbl.pm:757> INFO - Output to projectPaper.bbl
