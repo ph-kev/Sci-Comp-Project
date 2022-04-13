@@ -185,10 +185,10 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \begin{algorithm}
       \caption{Simplified algorithm for FDVM}\label{alg:car-following}
       \begin{algorithmic}
-      \Require Initial state variables for each car. 
-      \Require Car, an array of cars.
+      \Require Initial state variables for each car at $t=0$. 
+      \Require carArr, an array of cars.
       \For{$i = 1:$numsteps}{}
-      \For{$j =$ length(cars):$-1$:$1$}{}
+      \For{$j =$ length(carArr):$-1$:$1$}{}
         \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
         \EndFor
       \EndFor
