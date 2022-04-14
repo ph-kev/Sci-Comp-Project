@@ -24,7 +24,7 @@ classdef Vehicle<handle
                 obj.lane = lane;
                 obj.isTrafficLight = tl;
                 % Optional paramters.
-                obj.params = [0.65, 33.3, 15, 1.5, 1.4, 3];
+                obj.params = [5, 33.3, 15, 1.5, 1.4, 3];
                 if (length(varargin) > length(obj.params))
                     error('Too many input parameters');
                 end
