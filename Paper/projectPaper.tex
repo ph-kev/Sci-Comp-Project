@@ -318,6 +318,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_x.eps}
         \caption{Position versus time graph. Each line represents a single vehicle, and vehicles in all lanes are shown. Car 1 started in lane 3.}
+        \label{multi lane x}
       \end{center}
     \end{figure}
 
@@ -325,6 +326,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_laneSpeed.eps}
         \caption{Mean speed of vehicles in each lane  }
+        \label{mean lane speed}
       \end{center}
     \end{figure}
 
@@ -339,6 +341,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_density.pdf}
         \caption{Density versus time (s) and position (m)}
+        \label{num cars per lane}
       \end{center}
     \end{figure}
 
@@ -352,14 +355,15 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \end{figure}
     \subsubsection{Analysis}
 
-    In figure 9, most of the cars appear to slow down before the roadblock at $x = 900$ except for Car one. This is likely caused by the cars in the front slowing down and changing to the empty lane in anticipation of the roadblock. Since Car one starts of in the empty lane and is the first car, it is able to avoid the traffic caused by lane changes farther back.
+    In figure (\ref{multi lane x}), most of the cars appear to slow down before the roadblock at $x = 900$ except for Car one. This is likely caused by the cars in the front slowing down and changing to the empty lane in anticipation of the roadblock. Since Car one starts of in the empty lane and is the first car, it is able to avoid the traffic caused by lane changes farther back.
    
-    From figure 10, the mean speed of cars in lane three are much higher than those in lanes one and two. There are a lot of sudden dips in $v-{\rm lane}$ for lane three and these dips correspond with sudden peaks in Lane two. This is caused by cars changing lane from two to three, hence cars in lane two speed up because of the larger gaps and cars in lane three decelerate to maintain a larger gap.
+    From figure (\ref{mean lane speed}), the mean speed of cars in lane three are much higher than those in lanes one and two. There are a lot of sudden dips in $v-{\rm lane}$ for lane three and these dips correspond with sudden peaks in Lane two. This is caused by cars changing lane from two to three, hence cars in lane two speed up because of the larger gaps and cars in lane three decelerate to maintain a larger gap.
 
     TODO: Interpret figure 11. We can see in Figure 11 that flow rate is much higher before the roadblock and it appears to spread out. In Flow rate graphs, intensity is conserved?
 
     TODO: Interpret figure 12 or get rid of it.
 
+    Figure (\ref{num cars per lane}) confirms that all cars eventually end up in lane three. There is a sharp decrease of cars in lane one at $t=50$ and a decrease of cars in lane two at $t = 70$. 
 
     \section{Conclusion}
     \section{Further Remarks}
