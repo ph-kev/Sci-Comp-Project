@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'projectPaper.blg'
-[269] biber-MSWIN64:340> INFO - === 
-[376] Biber.pm:418> INFO - Reading 'projectPaper.bcf'
-[543] Biber.pm:972> INFO - Found 3 citekeys in bib section 0
-[564] Biber.pm:4383> INFO - Processing section 0
-[592] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
-[704] bibtex.pm:1713> INFO - LaTeX decoding ...
-[728] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
-[936] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[936] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[936] Biber.pm:4203> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
-[936] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[942] bbl.pm:654> INFO - Writing 'projectPaper.bbl' with encoding 'UTF-8'
-[945] bbl.pm:757> INFO - Output to projectPaper.bbl
+[138] biber-MSWIN64:340> INFO - === 
+[182] Biber.pm:418> INFO - Reading 'projectPaper.bcf'
+[313] Biber.pm:972> INFO - Found 3 citekeys in bib section 0
+[330] Biber.pm:4383> INFO - Processing section 0
+[344] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
+[408] bibtex.pm:1713> INFO - LaTeX decoding ...
+[419] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
+[495] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[495] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[496] Biber.pm:4203> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
+[496] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[499] bbl.pm:654> INFO - Writing 'projectPaper.bbl' with encoding 'UTF-8'
+[502] bbl.pm:757> INFO - Output to projectPaper.bbl

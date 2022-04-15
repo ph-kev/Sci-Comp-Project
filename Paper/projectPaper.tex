@@ -201,7 +201,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
     TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration), Look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?)
-    \subsubsection{Simulation}
+    \subsubsection{Data}
     In this section, we will present multiple graphs from our simulation. We present graphs of position, velocity, acceleration, and gap. These graphs will be used to compare the graphs we get from later sections. 
     
     We will do a simulation with the algorithm described in section (\ref{sec:implementation}). At $t=0$, the initial conditions are $x_\alpha = 
@@ -236,7 +236,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsection{Bottleneck}
     TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
     \subsubsection{Implementation}
-    \subsubsection{Simulation}
+    \subsubsection{Data}
     \subsubsection{Analysis}
     \subsection{Lane Changes}
     TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
@@ -296,7 +296,13 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a four-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
     To implement the closure of two lanes, we placed two virtual vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000.  The reasoning for the different widths is explained in section x.
-    \subsubsection{Simulation}
+    \subsubsection{Data}
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics{multi_lane_bottleneck_x.pdf}
+      \end{center}
+    \end{figure}
     \subsubsection{Analysis}
     \section{Conclusion}
     \section{Further Remarks}
