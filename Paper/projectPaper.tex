@@ -169,6 +169,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \end{tabular}
         \end{center}
         \caption{Typical parameters for highway traffic for the FVDM.}
+        \label{fig:parameters}
     \end{figure}
     
     We now examine how different parameters of the optimal velocity function affect the graph. 
@@ -180,7 +181,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     
     Analyzing equation (\ref{a_mic}), $v_{\rm opt} (s) - v_\alpha$ is positive if $v_{\rm opt} (s) > v_\alpha$. The car has not reached its optimal velocity and so, acceleration is positive. Similarly, if  $v_{\rm opt} (s) < v_\alpha$, $v_{\rm opt} (s) - v_\alpha$ is negative and so, the car is decelerating to reach its optimal velocity. If $v_{\rm opt} (s) = v_\alpha$, then $a_{\rm mic} = 0$. The speed adaptation time $\tau$ determine how fast the car accelerate or decelerate and thus, affect the time it takes for the car to reach its optimal velocity. The term $-\gamma \Delta v$ is positive if $v_\alpha < v_l$ and negative if $v_\alpha > v_l$. This leads to more acceleration if the car is trying to catch to the leader car and less acceleration if the car is trying to slow down due to the leader car's slower velocity. 
   
-    \subsection{Implementation}
+    \subsection{Implementation}\label{sec:implementation}
     We first initialize initial conditions for the state variables of the vehicles. We store the vehicles in an array and iterate through them. As described in section (\ref{num_sch}), we iterate through the vehicles starting with the last vehicle with respect to position and go through in ascending order. We update the state variables of the cars using equations (\ref{num_eq1}), (\ref{num_eq2}), and (\ref{a_mic}). We repeat this process for the number of iterations required. 
     \begin{algorithm}
       \caption{Simplified algorithm for FDVM}\label{alg:car-following}
@@ -194,12 +195,16 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \EndFor
       \end{algorithmic}
       \end{algorithm}
-    We still have not addressed the situation with the first car when updating its state variables. Equation (\ref{a_mic}) need values for the car's gap $s_\alpha$ we are updating and the velocity of the leader car $v_l$. However, the first car does not have a leader car. To resolve this, we impose a destination for the cars. We use this value in the calculation of gap $s_\alpha$. Secondly, we set $v_l = 0$. This resolve the problem of updating the state variables of the first car. 
+    We still have not addressed the situation with the first car when updating its state variables. The equation (\ref{a_mic}) need values for the car's gap $s_\alpha$ we are updating and the velocity of the leader car $v_l$. However, the first car does not have a leader car. To resolve this, we impose a destination for the cars. We use this value in the calculation of gap $s_\alpha$. For the situation of the velocity of the leader car, it might be reasonable to set it to set $v_l = 0$. However, if $v_l=0$, then the term $-\gamma \Delta v$ blow up. In other words, this car is too wary of crashing. To resolve this problem, it is best to set $v_l = v_\alpha$ which ensure that the term $-\gamma \Delta v$ is $0$. However, we note that this will cause a small problem in our simulation. 
+    
+    We use the same parameters in Figure (\ref{fig:parameters}). Furthermore, we choose the width of the cars to be $5$ meters.
     \section{Examining Different Scenarios}
     \subsection{Homogeneous Traffic}
     TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration), Look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?)
     \subsubsection{Simulation}
+    In this section, we will present multiple graphs from our simulation. We present graphs of position, velocity, acceleration, and gap. 
     \subsubsection{Pitfalls}
+    There is one pitfall with how we update the first car's acceleration. In section \ref{sec:implementation}, we choose $v_l = v_\alpha$ and $s_\alpha = x_{\rm destination} - x_\alpha$ where $\alpha = 1$. The problem with solution is that it simulate a car that is permanently stuck at $x_{\rm destination}$ but with the same velocity as the first car. When the first car approaches $x_{\rm destination}$, the model predict that it is safe to move past $x_{\rm destination}$ since the simulated car has non-zero velocity and so, it will move out of the way. This does not happen and so, the car move past $x_{\rm destination}$. Due to how $v_{\rm opt}$ is computed, $v_{\rm opt}$ is $0$ once the first car is past $x_{\rm destination}$. In other words, the first car does eventually slow down. It might be better to state that $x_{\rm destination}$ is a suggestion for the first car to slow down and stop. 
     \subsection{Bottleneck}
     TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
     \subsubsection{Implementation}
@@ -214,18 +219,34 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
    Lane changes are dealt with on a microscopic level, meaning that for in each timestep for each vehicle, we decided whether or not to change lanes.  In our model, we will only consider changing to adjacent lanes in a single time step (no sideways driving). So, in timestep $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
 
-      TODO: Figure here.
-    
+      \begin{figure}[H]
+        \begin{center}
+          \includegraphics{lane_change_diagram.PNG}
+        \end{center}
+        \caption{An example of the notation we are using for lane changes. $l$ denotes the leading car and $f$ denotes the following car. A hat refers to quantities after the lane change.}
+      \end{figure}
+   
       When a vehicle decides to change lanes, it must do two things: check that the lane change is safe and check that there is an incentive to change lanes.
 
-      Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that there is a minimum gap between the leading and following vehicles. This minimum gap is dependent on factors like the velocities of the vehicles and the reaction time of the drivers. The formula we are using is 
+      Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that $s_{\alpha}$ is smaller than a predefined safe gap. This minimum gap is dependent on factors like the velocities of the vehicles and the reaction time of the drivers. 
+      Considering this, we can define a minimum safe gap as 
       \begin{equation}
         s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\hat a}) \right]
       \end{equation}
+      where $b_{\rm safe}$ is the limit for a safe deceleration and $\tau$ is the adaptation time. 
 
       TODO: Explain inverse optimal velocity function.
 
-      To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocity in the 
+      To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocities of the leading cars in both lanes. We only want to switch lanes if there is either a large gap in the other lane or if the leading car in the other lane is faster. Therefore, we can define a gap, $s_{\rm adv}$, that encapsulates the benefit of staying in the same lane. 
+      
+      To prevent erratic lane changes, we also need to define $\Delta a$ which adds a cost to switching lanes.  Left lanes are also usually designated as passing lanes, and is frowned upon to travel in that lane. So, we introduce $a_{\rm bias}$ which lets our model prefer the right lane over the left one. 
+      
+      Combining all of the factors above gives us a measure of the cost of changing lanes:
+      \begin{equation}
+        s_{\rm adv} = s_{\alpha} + s_e\left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l})).\right]
+      \end{equation}
+
+      So, a vehicle can only change lanes if $\hat s_{\hat f} > s_{\rm safe}$ and $\hat s_{\alpha} > s_{\rm adv}$. 
 
 
     \subsection{Multi-lanes Bottleneck}
