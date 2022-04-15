@@ -45,7 +45,7 @@ classdef Vehicle<handle
             v_0 = obj.params(2);
             T = obj.params(5);
             s_0 = obj.params(6);
-            v_opt = max(0,min(v_0,(s-s_0)/(T)));
+            v_opt = max(0,min(v_0,((s-s_0)/(T))));
         end
 
         function newstate = timestep(obj, s, v_l, t_step, gamma)
@@ -222,7 +222,7 @@ classdef Vehicle<handle
             if index == next  % First car.
                 % Find gap using first car's position and destination.
                 front_gap = x_destination - carArr(index).state(1);
-                front_v = 0;
+                front_v = carArr(index).state(2);
             else % Cars after the first car.
                 % Compute gap and use velocity using the car in front of it.
                 front_gap = carArr(next).state(1) - carArr(next).width - carArr(index).state(1);
