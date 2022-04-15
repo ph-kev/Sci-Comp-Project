@@ -207,25 +207,25 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     We will do a simulation with the algorithm described in section (\ref{sec:implementation}). At $t=0$, the initial conditions are $x_\alpha = 
     200-\frac{200}{9}\left(a-1\right)$, $v_\alpha = 0$, and $a_\alpha = 0$ for $1 \leq \alpha \leq 10$. 
       \begin{figure}[H]
-          \includegraphics[width=11cm]{HomogeneousTraffic1.png}
+          \includegraphics[width=11cm]{HomogeneousTraffic1.eps}
           \centering
           \caption{Position versus time graph.}
       \end{figure}
 
       \begin{figure}[H]
-        \includegraphics[width=11cm]{HomogeneousTraffic2.png}
+        \includegraphics[width=11cm]{HomogeneousTraffic2.eps}
         \centering
         \caption{Velocity versus time graph}
       \end{figure}
 
       \begin{figure}[H]
-      \includegraphics[width=11cm]{HomogeneousTraffic3.png}
+      \includegraphics[width=11cm]{HomogeneousTraffic3.eps}
       \centering
       \caption{Acceleration versus time graph}
       \end{figure}
 
       \begin{figure}[H]
-      \includegraphics[width=11cm]{HomogeneousTraffic4.png}
+      \includegraphics[width=11cm]{HomogeneousTraffic4.eps}
       \centering
       \caption{Gap versus time graph}
       \end{figure}
@@ -293,17 +293,44 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsubsection{Pitfall}
     TODO: Talk about how lane change alg. can only change lanes from left to right (no capable of taking a bunch of costs at once and to get an advantage)
     \subsection{Multi-lane Bottleneck}
-    An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a four-lane highway are closed for maintenance. 
+    An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a three-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
-    To implement the closure of two lanes, we placed two virtual vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000.  The reasoning for the different widths is explained in section x.
+    To implement the closure of two lanes, we placed two virtual vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000. So, lane three was the lane that was left empty.
     \subsubsection{Data}
 
     \begin{figure}[H]
       \begin{center}
-        \includegraphics{multi_lane_bottleneck_x.pdf}
+        \includegraphics[width=13cm]{mlbn_x.eps}
+        \caption{Position versus time graph. Each line represents a single vehicle, and vehicles in all lanes are shown. Car 1 started in lane 3. }
       \end{center}
     \end{figure}
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=13cm]{mlbn_laneSpeed.eps}
+        \caption{Mean speed of vehicles in each lane  }
+      \end{center}
+    \end{figure}
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=13cm]{mlbn_flow.pdf}
+        \caption{Flow rate?}
+      \end{center}
+    \end{figure}
+
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=13cm]{mlbn_density.pdf}
+        \caption{Mean speed of vehicles in each lane  }
+      \end{center}
+    \end{figure}
+
+
     \subsubsection{Analysis}
+
+
+    
     \section{Conclusion}
     \section{Further Remarks}
     \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
