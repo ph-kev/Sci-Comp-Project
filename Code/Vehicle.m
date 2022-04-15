@@ -7,7 +7,7 @@ classdef Vehicle<handle
         state % Position, velocity, and acceleration.
         params % Adaptation time, v_desired, transition_width, form_factor, time_gap, min_gap.
         lane % Lane number.
-        isTrafficLight
+        isVirtual
     end
 
     methods
@@ -22,7 +22,7 @@ classdef Vehicle<handle
                 obj.width = width;
                 obj.state = [x_0, v_0, a_0];
                 obj.lane = lane;
-                obj.isTrafficLight = tl;
+                obj.isVirtual = tl;
                 % Optional paramters.
                 obj.params = [5, 33.3, 15, 1.5, 1.4, 3];
                 if (length(varargin) > length(obj.params))

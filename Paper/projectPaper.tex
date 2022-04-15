@@ -47,7 +47,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \maketitle
 
     \begin{abstract}
-        Traffic flow dynamics is generally split into either macroscopic models or microscopic models. For this paper, we will focus on car following models which is a type of microscopic model. We first introduce the assumptions and the mathematical description car following model and the numerical scheme used to compute them. Then, we give the full velocity difference model. Finally, we examine different scenarios such as bottlenecks, phantom traffic, and lane changes and analyze the behavior of cars. 
+        Traffic flow dynamics is generally split into either macroscopic models or microscopic models. For this paper, we will focus on car following models which is a type of microscopic model. We first introduce the assumptions and the mathematical description car following model and the numerical scheme used to compute them. Then, we give the full velocity difference model. Finally, we examine different scenarios such as bottlenecks and lane changes and analyze the behavior of cars. 
     \end{abstract}
 
     \newpage
@@ -57,7 +57,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \newpage
 
     \section{Introduction}
-    How does a bottleneck affect a series of vehicles? How do a traffic jam propagate through a series of vehicles? What impact does changing a road from multiple lanes to one lane have a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
+    How does a bottleneck affect a series of vehicles? What impact does changing a road from multiple lanes to one lane have a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
 
     Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by treating them as entire unit. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete or continuous variables, and deterministic or stochastic process. Some applications of traffic flow models include simulating traffic, optimizing traffic lights, and calculating carbon emissions from traffic. 
 
@@ -210,9 +210,6 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsubsection{Implementation}
     \subsubsection{Simulation}
     \subsubsection{Analysis}
-    \subsection{Phantom Traffic: Local Perturbation}
-    \subsubsection{Implementation}
-    TODO: Look at how stopping suddenly propagate through the cars. Something about waves? 
     \subsection{Lane Changes}
     TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
     \subsubsection{Implementation}
@@ -249,8 +246,10 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       So, a vehicle can only change lanes if $\hat s_{\hat f} > s_{\rm safe}$ and $\hat s_{\alpha} > s_{\rm adv}$. 
 
 
-    \subsection{Multi-lanes Bottleneck}
+    \subsection{Multi-lane Bottleneck}
+    An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a four-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
+    To implement the closure of two lanes, we placed two virtual vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000.  The reasoning for the different widths is explained in section x.
     \subsubsection{Simulation}
     \subsubsection{Analysis}
     \section{Conclusion}
