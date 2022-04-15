@@ -211,6 +211,23 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsection{Lane Changes}
     TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
     \subsubsection{Implementation}
+
+   Lane changes are dealt with on a microscopic level, meaning that for in each timestep for each vehicle, we decided whether or not to change lanes.  In our model, we will only consider changing to adjacent lanes in a single time step (no sideways driving). So, in timestep $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
+
+      TODO: Figure here.
+    
+      When a vehicle decides to change lanes, it must do two things: check that the lane change is safe and check that there is an incentive to change lanes.
+
+      Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that there is a minimum gap between the leading and following vehicles. This minimum gap is dependent on factors like the velocities of the vehicles and the reaction time of the drivers. The formula we are using is 
+      \begin{equation}
+        s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\hat a}) \right]
+      \end{equation}
+
+      TODO: Explain inverse optimal velocity function.
+
+      To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocity in the 
+
+
     \subsection{Multi-lanes Bottleneck}
     \subsubsection{Implementation}
     \subsubsection{Simulation}
