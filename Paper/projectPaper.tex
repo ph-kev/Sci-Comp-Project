@@ -232,7 +232,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
       For the gap versus time graph, we do not plot the gap of car $1$ since the gap is the difference between the car position $x_1$ and $x_{\rm position}$ which is not of interest. 
     \subsubsection{Pitfalls}\label{sec:homogeneous_pitfal}
-    There is one pitfall with how we update the first car's acceleration. In section \ref{sec:implementation}, we choose $v_l = v_\alpha$ and $s_\alpha = x_{\rm destination} - x_\alpha$ where $\alpha = 1$. The problem with solution is that it simulate a car that is permanently stuck at $x_{\rm destination}$ but with the same velocity as the first car. When the first car approaches $x_{\rm destination}$, the model predict that it is safe to move past $x_{\rm destination}$ since the simulated car has non-zero velocity and so, it will move out of the way. This does not happen and so, the car move past $x_{\rm destination}$. Due to how $v_{\rm opt}$ is computed, $v_{\rm opt}$ is $0$ once the first car is past $x_{\rm destination}$. In other words, the first car does eventually slow down. It is better to state that $x_{\rm destination}$ is when the first car will begin to slow down and eventually stop after some distance.  
+    There is one pitfall with how we update the first car's acceleration. In section \ref{sec:implementation}, we choose $v_l = v_\alpha$ and $s_\alpha = x_{\rm destination} - x_\alpha$ where $\alpha = 1$. The problem with solution is that it simulate a car that is permanently stuck at $x_{\rm destination}$ but with the same velocity as the first car. When the first car approaches $x_{\rm destination}$, the model predict that it is safe to move past $x_{\rm destination}$ since the simulated car has non-zero velocity and so, it will move out of the way. This does not happen and so, the car move past $x_{\rm destination}$. Due to how $v_{\rm opt}$ is computed, $v_{\rm opt}$ is $0$ once the first car is past $x_{\rm destination}$. In other words, the first car does eventually slow down and stop. It is better to state that $x_{\rm destination}$ is when the first car will begin to slow down and eventually stop after some distance.  
     \subsection{Bottleneck}
     TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
     \subsubsection{Implementation}
@@ -248,7 +248,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \begin{center}
           \includegraphics{lane_change_diagram.PNG}
         \end{center}
-        \caption{An example of the notation we are using for lane changes. $l$ denotes the leading car and $f$ denotes the following car. A hat refers to quantities after the lane change. Page $242$ in [\cite{traffic}]}
+        \caption{An example of the notation we are using for lane changes. $l$ denotes the leading car and $f$ denotes the following car. A hat refers to quantities after the lane change. Page $242$ in [\cite{traffic}].}
       \end{figure}
 
       When a vehicle decides to change lanes, it must do two things: check that the lane change is safe and check that there is an incentive to change lanes.
