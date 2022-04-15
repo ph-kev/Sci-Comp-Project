@@ -248,7 +248,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \begin{center}
           \includegraphics{lane_change_diagram.PNG}
         \end{center}
-        \caption{An example of the notation we are using for lane changes. $l$ denotes the leading car and $f$ denotes the following car. A hat refers to quantities after the lane change. Page $242$ in [\cite{traffic}].}
+        \caption{An example of the notation we are using for lane changes. $l$ denotes the leading car and $f$ denotes the following car. A hat refers to quantities after the lane change. From page $242$ in [\cite{traffic}].}
       \end{figure}
 
       When a vehicle decides to change lanes, it must do two things: check that the lane change is safe and check that there is an incentive to change lanes.
@@ -264,7 +264,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
       To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocities of the leading cars in both lanes. We only want to switch lanes if there is either a large gap in the other lane or if the leading car in the other lane is faster. Therefore, we can define a gap, $s_{\rm adv}$, that encapsulates the benefit of staying in the same lane. 
       
-      To prevent erratic lane changes, we also need to define $\Delta a$ which adds a cost to switching lanes.  Left lanes are also usually designated as passing lanes, and is frowned upon to travel in that lane. So, we introduce $a_{\rm bias}$ which lets our model prefer the right lane over the left one. 
+      To prevent erratic lane changes, we also need to define an advantage threshold $\Delta a$ such that the vehicle will only change lanes if potential gain in acceleration is greater than $\Delta a$.  Left lanes are also usually designated as passing lanes, so right lanes are slower by convention. So, we introduce $a_{\rm bias}$ which lets our model prefer the left lane over the right one. 
       
       TODO: Change the paragraph above about left lane. 
 
@@ -274,6 +274,22 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \end{equation}
 
       So, a vehicle can only change lanes if $\hat s_{\hat f} > s_{\rm safe}$ and $\hat s_{\alpha} > s_{\rm adv}$. 
+
+      Typical lane changing parameters in a highway are given in the table below. 
+      \begin{figure}[H]
+        \begin{center}
+          \begin{tabular}{l c c } 
+          Parameter & Value \\
+          \hline
+          $b_{\rm safe}$, limit for safe deceleration & $2$ m/s$^2$ \\
+          $\Delta a$, changing threshold & $0.1$ m/s$^2$ \\
+          $a_{\rm bias}$, keep left directive & $-0.3$ m/s$^2$ in right lane, $0$ in left lane \\
+
+          \end{tabular}
+          \end{center}
+          \caption{Typical parameters for highway traffic for the lane changing algorithm. From page 244 in [\cite{traffic}]}
+          \label{fig:parameters}
+      \end{figure}
 
       TODO: Implementation coding wise and sorting car array and stuff like that. 
       \begin{algorithm}
@@ -301,7 +317,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \begin{figure}[H]
       \begin{center}
         \includegraphics[width=13cm]{mlbn_x.eps}
-        \caption{Position versus time graph. Each line represents a single vehicle, and vehicles in all lanes are shown. Car 1 started in lane 3. }
+        \caption{Position versus time graph. Each line represents a single vehicle, and vehicles in all lanes are shown. Car 1 started in lane 3.}
       \end{center}
     \end{figure}
 
@@ -315,22 +331,36 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \begin{figure}[H]
       \begin{center}
         \includegraphics[width=13cm]{mlbn_flow.pdf}
-        \caption{Flow rate?}
+        \caption{Flow rate versus time (s) and position (m)}
       \end{center}
     \end{figure}
 
     \begin{figure}[H]
       \begin{center}
         \includegraphics[width=13cm]{mlbn_density.pdf}
-        \caption{Mean speed of vehicles in each lane  }
+        \caption{Density versus time (s) and position (m)}
       \end{center}
     \end{figure}
 
+    TODO: Some way of representing lane data. Perhaps a heatmap with cars in y axis, time in x axis.
 
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=13cm]{mlbn_lanecars.eps}
+        \caption{Number of cars per lane}
+      \end{center}
+    \end{figure}
     \subsubsection{Analysis}
 
+    In figure 9, most of the cars appear to slow down before the roadblock at $x = 900$ except for Car one. This is likely caused by the cars in the front slowing down and changing to the empty lane in anticipation of the roadblock. Since Car one starts of in the empty lane and is the first car, it is able to avoid the traffic caused by lane changes farther back.
+   
+    From figure 10, the mean speed of cars in lane three are much higher than those in lanes one and two. There are a lot of sudden dips in $v-{\rm lane}$ for lane three and these dips correspond with sudden peaks in Lane two. This is caused by cars changing lane from two to three, hence cars in lane two speed up because of the larger gaps and cars in lane three decelerate to maintain a larger gap.
 
-    
+    TODO: Interpret figure 11. We can see in Figure 11 that flow rate is much higher before the roadblock and it appears to spread out. In Flow rate graphs, intensity is conserved?
+
+    TODO: Interpret figure 12 or get rid of it.
+
+
     \section{Conclusion}
     \section{Further Remarks}
     \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
