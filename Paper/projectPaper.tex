@@ -124,7 +124,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \end{align}
         Each car following model has a specific acceleration function: $a_{\rm mic}\footnote{We use $a_{\rm mic}$ for the acceleration function and $a$ to describe the state variable acceleration.}$. For the simulation, we will use the Full Velocity Difference Model (FVDM) which is described in section (\ref{ch3.1}).
     \subsection{Numerical Scheme}\label{num_sch}
-    The standard way of numerically solving a system of coupled differential equations would be to use a fourth order Runge Kutta method.
+    The standard way of numerically solving a system of coupled differential equations would be to use a fourth order Runge-Kutta method.
     However, higher order methods all assume higher orders of smoothness in the differential equation and its solution [\cite{numerics}].
     Our model is only smooth to first order because suddenly changes in acceleration is common, for example, during lane changes. 
     So, using a high order method could be worse than a simple first order method.
@@ -250,52 +250,52 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       Q(x,t) = \frac{\Delta N}{\Delta t}
     \end{equation}
     where $\Delta N$ is the number of cars in the interval $[t, t +\Delta t]$. This measures how many cars are passing though a certain point in the time from $t$ to $t + \Delta t$. 
-    \begin{figure}[H]\label{fig:homogeneousPos}
+    \begin{figure}[H]\label{fig:obstaclePos}
       \includegraphics[width=13cm]{BottleNeck1.eps}
       \centering
       \caption{Position versus time graph.}
   \end{figure}
 
-  \begin{figure}[H]\label{fig:homogeneousVel}
+  \begin{figure}[H]\label{fig:obstacleVel}
     \includegraphics[width=13cm]{BottleNeck2.eps}
     \centering
-    \caption{Velocity versus time graph}
+    \caption{Velocity versus time graph.}
   \end{figure}
 
-  \begin{figure}[H]\label{fig:homogeneousAcc}
+  \begin{figure}[H]\label{fig:obstacleAcc}
   \includegraphics[width=13cm]{BottleNeck3.eps}
   \centering
-  \caption{Acceleration versus time graph}
+  \caption{Acceleration versus time graph.}
   \end{figure}
 
-  \begin{figure}[H]\label{fig:homogeneousGap}
+  \begin{figure}[H]\label{fig:obstacleGap}
   \includegraphics[width=13cm]{BottleNeck4.eps}
   \centering
-  \caption{Gap versus time graph}
+  \caption{Gap versus time graph.}
   \end{figure}
 
-  \begin{figure}[H]
+  \begin{figure}[H]\label{fig:obstacleDensity}
   \includegraphics[width=13cm]{BottleNeck5.eps}
   \centering
+  \caption{Density versus time (s) and position (m).}
   \end{figure}
 
-  \begin{figure}[H]
+  \begin{figure}[H]\label{fig:obstacleFlow}
     \includegraphics[width=13cm]{BottleNeck6.eps}
     \centering
+    \caption{Flow Rate time (s) and position (m).}
     \end{figure}
 
-    \begin{figure}[H]
+    \begin{figure}[H]\label{fig:obstacleMean}
       \includegraphics[width=13cm]{BottleNeck7.eps}
       \centering
+      \caption{Mean velocity of homogeneous and obstacle traffic versus time.}
       \end{figure}
 
     \subsubsection{Analysis}
-    We first examine the position, density, and flow rate of the cars. From figure (\ref{fig:homogeneousPos})
+    We first examine the position, density, and flow rate of the cars. From figure (\ref{fig:obstaclePos}), at $t=30$, the first car begin to slow down due to the obstacle. Subsequent cars begin to slow down. Around $t=50$, the first car's position is $x\approx 1192$. This results in the density of the cars increasing to around $3$ cars in a 20 $m$ interval as shown in figure (\ref{fig:obstacleDensity}). Furthermore, since the cars are unable to move due to the obstacle, the flow rate is $0$ as shown in figure (\ref{fig:obstacleFlow}). The mean velocity of all the cars is the same for traffic with and without the obstacle till roughly $t=30$. Looking at figure (\ref{fig:obstacleMean}), The maximum mean velocity is $33.3$ m/s for homogeneous traffic. Meanwhile, the maximum mean velocity is $29.0946$ m/s for the traffic with the obstacle. The cars never achieve a maximum mean velocity of $3.33$ m/s because as cars almost reach their maximum velocity, the first car's position is $x = x_{\rm destination}$ and so, the first car begin to slow down. This results in the mean velocity to decrease to $0$. 
 
-    We now examine each car's deceleration. From figure (\ref{fig:homogeneousAcc}), the first car decelerate at $t=30$ which is when the obstacle appears. The other cars gradually decelerate following this. Roughly $6$ seconds later, the fifth car reach its maximum deceleration of $-3.4932$ m/s$^2$. Roughly $8$ seconds later, the tenth car reach its maximum deceleration of $-2.5861$ m/s$^2$. Roughly $8$ seconds later, the fifteenth car reach its maximum deceleration of $-2.2633$ m/s$^2$. Roughly $8$ seconds later, the last car reach its maximum deceleration of $-2.0998$ m/s$^2$. This phenomena is known as a stop-and-go wave [\cite{traffic}]. The effects of the first car stopping is not felt for the last car until much later. In this case, it took the wave to travel $30$ seconds to travel to the last car. Furthermore, the intensity of the braking lessen as the wave start with the first car and goes through to the last car. This suggests that given a sufficient number of cars and sufficient gaps between the cars, the wave would eventually die out. 
-
-      
-    TODO: how fast they exit out of the traffic jam (from v=0 to max v maybe), talk about graph of position, velocity, and acceleration (only show it for car 1,5,15,20 for velocity and acceleration), density and flow rate plot (talk about max density and how the flow rate is killed off basically) 
+    We now examine each car's acceleration. From figure (\ref{fig:obstacleAcc}), the first car decelerate at $t=30$ which is when the obstacle appears. The other cars gradually decelerate following this. Roughly $6$ seconds later, the fifth car reach its maximum deceleration of $-3.4932$ m/s$^2$. Roughly $8$ seconds later, the tenth car reach its maximum deceleration of $-2.5861$ m/s$^2$. Roughly $8$ seconds later, the fifteenth car reach its maximum deceleration of $-2.2633$ m/s$^2$. Roughly $8$ seconds later, the last car reach its maximum deceleration of $-2.0998$ m/s$^2$. This phenomena is known as a stop-and-go wave [\cite{traffic}]. The effects of the first car stopping is not felt for the last car until much later. In this case, it took the wave to travel $30$ seconds to travel to the last car. Furthermore, the intensity of the braking lessen as the wave start with the first car and goes through to the last car. This suggests that given a sufficient number of cars and sufficient gaps between the cars, the wave would eventually die out. 
     \subsection{Lane Changes}
     \subsubsection{Implementation}
 
@@ -317,7 +317,13 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \end{equation}
       where $b_{\rm safe}$ is the limit for a safe deceleration and $\tau$ is the adaptation time. 
 
-      TODO: Explain inverse optimal velocity function.
+      The inverse optimal velocity function, is not defined for negative velocity values, so we extend it and get
+      \begin{equation}
+        v_{\rm opt}^{-1}(v) = \begin{cases}
+          s_0 & v \leq 0,\\
+          s_0 + Tv & v > 0.\\
+        \end{cases}
+      \end{equation}
 
       To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocities of the leading cars in both lanes. We only want to switch lanes if there is either a large gap in the other lane or if the leading car in the other lane is faster. Therefore, we can define a gap, $s_{\rm adv}$, that encapsulates the benefit of staying in the same lane. 
       
@@ -364,8 +370,6 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
     The major issue with the lane changing algorithm comes from the fact that we can only think one timestep ahead and look at one lane to the side. This means that our algorithm can't make tactical decisions like switching into a slow lane and then switching again to a fast lane. Because we extrapolate the gaps and velocities at the current timestep, we are effectively only thinking one timestep ahead too. So, lane changes are often short-sighted. This manifests in what we call \textit{lane oscillations} where a car will switch to a different lane and then switch back very quickly. 
     
-    TODO: Add to the paragraph above.
-
     \subsection{Multi-lane Bottleneck}
     An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a three-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
@@ -424,7 +428,9 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     Figure (\ref{fig:num cars per lane}) confirms that all cars eventually end up in lane three. There is a sharp decrease of cars in lane one at $t=50$ and a decrease of cars in lane two at $t = 70$. We can also see \textit{lane oscillations} as discussed in (\ref{lane change pitfalls}).
 
     \section{Conclusion}
-    In this paper, we have successfully implemented a microscopic car following model and lane changing algorithm and used it to analyze several common scenarios. The model we are using has some pitfalls, such as unrealistically large accelerations. However, it does help us understand the creation and propagation of stop-and-go waves in single lane traffic. Similarly, our lane changing algorithm 
+    In this paper, we have successfully implemented a microscopic car following model and lane changing algorithm and used it to analyze several common scenarios. The model we are using has some pitfalls, such as unrealistically large accelerations. However, it does help us understand the creation and propagation of stop-and-go waves in single lane traffic. Similarly, our lane changing algorithm can only look ahead one timestep and look across one lane, but it still shows us traffic flow bottlenecks when lanes in a highway are closed.
+
+    Our paper is only the tip of the iceberg. The car following model is rather powerful and can be used to study many other traffic phenomena. Future iterations of this project could explore cars entering a priority road and the flow of traffic in a roundabout.
     
   \newpage    
     \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
