@@ -153,7 +153,7 @@ classdef Vehicle<handle
             % \param leftLane, if 1, then the car is switching to the left
             % lane and if 0, then the car is switching to the right lane.
             % \returns Value of the incentive criterion.
-            if leftLane == 0  %  check if we are in the fast lane 
+            if leftLane == 1  %  check if we are in the fast lane 
                 a_bias = -1 * a_bias;
             end
             tau = obj.params(1); 

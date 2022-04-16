@@ -266,8 +266,6 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
       To prevent erratic lane changes, we also need to define an advantage threshold $\Delta a$ such that the vehicle will only change lanes if potential gain in acceleration is greater than $\Delta a$.  Left lanes are also usually designated as passing lanes, so right lanes are slower by convention. So, we introduce $a_{\rm bias}$ which lets our model prefer the left lane over the right one. 
       
-      TODO: Change the paragraph above about left lane. 
-
       Combining all of the factors above gives us a measure of the cost of changing lanes:
       \begin{equation}
         s_{\rm adv} = s_{\alpha} + s_e\left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l})).\right]
@@ -283,7 +281,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
           \hline
           $b_{\rm safe}$, limit for safe deceleration & $2$ m/s$^2$ \\
           $\Delta a$, changing threshold & $0.1$ m/s$^2$ \\
-          $a_{\rm bias}$, keep left directive & $-0.3$ m/s$^2$ in right lane, $0$ in left lane \\
+          $a_{\rm bias}$, keep left directive & $0.3$ m/s$^2$ in right lane, $-0.3$ in left lane \\
 
           \end{tabular}
           \end{center}
@@ -291,18 +289,18 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
           \label{fig:parameters}
       \end{figure}
 
-      TODO: Implementation coding wise and sorting car array and stuff like that. 
+      When adding the lane changing algorithm to our existing code, we must ensure that the order of the cars are tracked during every timestep because $a_{\rm mic}$ and the lane changing algorithm rely. If one car overtakes another, the array of cars will go out of order. We alleviated this by reordering our array of cars at the end of each timestep.  
       \begin{algorithm}
         \caption{Simplified algorithm for FDVM with lane changes}\label{alg:car-following-lane}
         \begin{algorithmic}
         \Require Initial state variables for each car at $t=0$. 
         \Require carArr, an array of cars.
         \For{$i = 1:$numsteps}{}
-        \State sort(carArr)
         \For{$j =$ length(carArr):$-1$:$1$}{}
           \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
           \State New lane of $j$th car $\gets$ carArr($j$).changeLane()
           \EndFor
+          \State sort(carArr)
         \EndFor
         \end{algorithmic}
         \end{algorithm}
