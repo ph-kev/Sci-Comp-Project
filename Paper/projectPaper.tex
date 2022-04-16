@@ -207,25 +207,25 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     We will do a simulation with the algorithm described in section (\ref{sec:implementation}). At $t=0$, the initial conditions are $x_\alpha = 
     200-\frac{200}{9}\left(a-1\right)$, $v_\alpha = 0$, and $a_\alpha = 0$ for $1 \leq \alpha \leq 10$. 
       \begin{figure}[H]
-          \includegraphics[width=11cm]{HomogeneousTraffic1.eps}
+          \includegraphics[width=13cm]{HomogeneousTraffic1.eps}
           \centering
           \caption{Position versus time graph.}
       \end{figure}
 
       \begin{figure}[H]
-        \includegraphics[width=11cm]{HomogeneousTraffic2.eps}
+        \includegraphics[width=13cm]{HomogeneousTraffic2.eps}
         \centering
         \caption{Velocity versus time graph}
       \end{figure}
 
       \begin{figure}[H]
-      \includegraphics[width=11cm]{HomogeneousTraffic3.eps}
+      \includegraphics[width=13cm]{HomogeneousTraffic3.eps}
       \centering
       \caption{Acceleration versus time graph}
       \end{figure}
 
       \begin{figure}[H]
-      \includegraphics[width=11cm]{HomogeneousTraffic4.eps}
+      \includegraphics[width=13cm]{HomogeneousTraffic4.eps}
       \centering
       \caption{Gap versus time graph}
       \end{figure}
@@ -233,10 +233,60 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       For the gap versus time graph, we do not plot the gap of car $1$ since the gap is the difference between the car position $x_1$ and $x_{\rm position}$ which is not of interest. 
     \subsubsection{Pitfalls}\label{sec:homogeneous_pitfal}
     There is one pitfall with how we update the first car's acceleration. In section \ref{sec:implementation}, we choose $v_l = v_\alpha$ and $s_\alpha = x_{\rm destination} - x_\alpha$ where $\alpha = 1$. The problem with solution is that it simulate a car that is permanently stuck at $x_{\rm destination}$ but with the same velocity as the first car. When the first car approaches $x_{\rm destination}$, the model predict that it is safe to move past $x_{\rm destination}$ since the simulated car has non-zero velocity and so, it will move out of the way. This does not happen and so, the car move past $x_{\rm destination}$. Due to how $v_{\rm opt}$ is computed, $v_{\rm opt}$ is $0$ once the first car is past $x_{\rm destination}$. In other words, the first car does eventually slow down and stop. It is better to state that $x_{\rm destination}$ is when the first car will begin to slow down and eventually stop after some distance.  
+
+    Another observation to make is that acceleration is sometime unrealistic especially for the first car. 
     \subsection{Bottleneck}
     TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
     \subsubsection{Implementation}
     \subsubsection{Data}
+    We present multiple graphs of position, velocity, acceleration, and gap. We also present graph about density and flow rate. Density is computed as 
+    \begin{equation} 
+      \rho = \frac{\Delta N}{\Delta x}
+    \end{equation}
+    where $\Delta N$ is the number of cars in the interval $[x, x+\Delta x]$. This measures how densely packed the car are. Flow rate is computed as 
+    \begin{equation} 
+      Q(x,t) = \frac{\Delta N}{\Delta t}
+    \end{equation}
+    where $\Delta N$ is the number of cars in the interval $[t, t +\Delta t]$. This measures how many cars are passing though a certain point in the time from $t$ to $t + \Delta t$. 
+    \begin{figure}[H]
+      \includegraphics[width=13cm]{BottleNeck1.eps}
+      \centering
+      \caption{Position versus time graph.}
+  \end{figure}
+
+  \begin{figure}[H]
+    \includegraphics[width=13cm]{BottleNeck2.eps}
+    \centering
+    \caption{Velocity versus time graph}
+  \end{figure}
+
+  \begin{figure}[H]
+  \includegraphics[width=13cm]{BottleNeck3.eps}
+  \centering
+  \caption{Acceleration versus time graph}
+  \end{figure}
+
+  \begin{figure}[H]
+  \includegraphics[width=13cm]{BottleNeck4.eps}
+  \centering
+  \caption{Gap versus time graph}
+  \end{figure}
+
+  \begin{figure}[H]
+  \includegraphics[width=13cm]{BottleNeck5.eps}
+  \centering
+  \end{figure}
+
+  \begin{figure}[H]
+    \includegraphics[width=13cm]{BottleNeck6.eps}
+    \centering
+    \end{figure}
+
+    \begin{figure}[H]
+      \includegraphics[width=13cm]{BottleNeck7.eps}
+      \centering
+      \end{figure}
+
     \subsubsection{Analysis}
     \subsection{Lane Changes}
     TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
@@ -309,7 +359,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsection{Multi-lane Bottleneck}
     An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a three-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
-    To implement the closure of two lanes, we placed two virtual vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000. So, lane three was the lane that was left empty.
+    To implement the closure of two lanes, we placed two virtual stationary vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000. So, lane three was the lane that was left empty.
     \subsubsection{Data}
 
     \begin{figure}[H]
