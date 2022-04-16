@@ -136,7 +136,8 @@ classdef Vehicle<handle
         function safeCriterion = safeCriterion(obj, v_f_hat, v_a, b_safe,gamma)
             % \brief Safety criterion for lane changing.
             % \param obj, car doing lane change.
-            % \param backCar, car behind the car that is doing a lane.
+            % \param v_f_hat, velocity of the following car in other lane.
+            % \param v_a, velocity of obj
             % \param b_safe, b_safe, limit for safe deacceleration.
             % \param gamma, speed difference sensitivity.
             % \returns Value of the safety criterion.
@@ -148,6 +149,9 @@ classdef Vehicle<handle
         function incentiveCriterion = incentiveCriterion(obj, s_a, v_l, v_l_hat, delta_a, a_bias, leftLane, gamma)
             % \brief Incentive condition for lane changing.
             % \param obj, car doing lane change.
+            % \param s_a, the gap in front of obj
+            % \param v_l, velocity of car in front of obj
+            % \param v_l_hat, velocity of car in front of obj in other lane
             % \param delta_a, changing threshold.
             % \param a_bias, keep-left directive. 
             % \param leftLane, if 1, then the car is switching to the left
@@ -193,14 +197,18 @@ classdef Vehicle<handle
         function [front_v, front_gap ,back_v, back_gap] = findGaps(carArr, index, laneNum, x_destination)
             % \brief Find the next and back cars in the lane that the car
             % is switching to.
-            % \param obj, car changing to laneNum.
             % \param carsArr, array of cars sorted by distance.
+            % \param index, index of car in question in carsArr
             % \param laneNum, index of lane we are searching.
+            % \param x_destination, the location of the destination
             % \return front_v, the velocity of the car in front in the lane
             %         specified by laneNum.
             %         back_v, the velocity of the car in the back.
             %         front_gap, the gap between the car at index and the
-            %         car in front.
+            %         car in front (lower in carArr).
+            %         back_gap, the gap between car at index and the 
+            %         car behind (higher in carArr)
+          
             next = index;
             previous = index;
             
