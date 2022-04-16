@@ -13,6 +13,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
+\usepackage[nottoc,numbib]{tocbibind}
 \graphicspath{{./figures/}}
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix}
 \usepackage[symbols,nogroupskip,record]{glossaries-extra}
@@ -57,7 +58,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \newpage
 
     \section{Introduction}
-    How does a bottleneck affect a series of vehicles? What impact does changing a road from multiple lanes to one lane have a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
+    How does an obstacle affect a series of vehicles? What impact does changing a road from multiple lanes to one lane have a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
 
     Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by treating them as entire unit. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete or continuous variables, and deterministic or stochastic process. Some applications of traffic flow models include simulating traffic, optimizing traffic lights, and calculating carbon emissions from traffic. 
 
@@ -197,10 +198,9 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \end{algorithm}
     We still have not addressed the situation with the first car when updating its state variables. The equation (\ref{a_mic}) need values for the car's gap $s_\alpha$ we are updating and the velocity of the leader car $v_l$. However, the first car does not have a leader car. To resolve this, we impose a destination for the cars. We use this value in the calculation of gap $s_\alpha$ by computing $x_\alpha - x_{\rm destination}$. For the situation of the velocity of the leader car, it might be reasonable to set it to set $v_l = 0$. However, if $v_l=0$, then the term $-\gamma \Delta v$ blow up. In other words, this car is too wary of crashing. To resolve this problem, it is best to set $v_l = v_\alpha$ which ensure that the term $-\gamma \Delta v$ is $0$. However, we note that this will cause a small problem in our simulation. We will address this in section (\ref{sec:homogeneous_pitfal}). 
     
-    We use the same parameters in Figure (\ref{fig:parameters}). Furthermore, we choose the width of the cars to be $5$ meters.
+    We use the same parameters in Figure (\ref{fig:parameters}). Furthermore, we choose the length of the cars to be $5$ meters.
     \section{Examining Different Scenarios}
-    \subsection{Homogeneous Traffic}
-    TODO: Give basic graphs so that we can compare to in the next sections and add any pitfalls with the model (unrealistic acceleration), Look at the pitfalls (since gap is used, stuff from far away can affect it and unrealistic acceleration which can be included in section 4.1 maybe?)
+    \subsection{Homogeneous Traffic}\label{sec:homogeneous}
     \subsubsection{Data}
     In this section, we will present multiple graphs from our simulation. We present graphs of position, velocity, acceleration, and gap. These graphs will be used to compare the graphs we get from later sections. 
     
@@ -233,11 +233,13 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       For the gap versus time graph, we do not plot the gap of car $1$ since the gap is the difference between the car position $x_1$ and $x_{\rm position}$ which is not of interest. 
     \subsubsection{Pitfalls}\label{sec:homogeneous_pitfal}
     There is one pitfall with how we update the first car's acceleration. In section \ref{sec:implementation}, we choose $v_l = v_\alpha$ and $s_\alpha = x_{\rm destination} - x_\alpha$ where $\alpha = 1$. The problem with solution is that it simulate a car that is permanently stuck at $x_{\rm destination}$ but with the same velocity as the first car. When the first car approaches $x_{\rm destination}$, the model predict that it is safe to move past $x_{\rm destination}$ since the simulated car has non-zero velocity and so, it will move out of the way. This does not happen and so, the car move past $x_{\rm destination}$. Due to how $v_{\rm opt}$ is computed, $v_{\rm opt}$ is $0$ once the first car is past $x_{\rm destination}$. In other words, the first car does eventually slow down and stop. It is better to state that $x_{\rm destination}$ is when the first car will begin to slow down and eventually stop after some distance.  
-
-    Another observation to make is that acceleration is sometime unrealistic especially for the first car. 
-    \subsection{Bottleneck}
-    TODO: Add time versus position graph and label the different situations, density graph, analysis, page 11 is a good source of questions to ask for this, a graph of car versus difference in time to get there (use the previous section)
+      
+    Another observation to make is that acceleration is sometime unrealistic especially for the first car. At $t=0$, the first car's acceleration is $6.66$ m/s$^2$ and the first car's deceleration is $5.7525$ m/s$^2$. The unrealistic acceleration occurred at the start of the simulation as the first car attempts to reach the optimal velocity as fast as it can. When the first car goes past $x_{\rm destination}$, the car immediately decelerate to slow down. This results in the unrealistic acceleration which also manifests itself in simulations involving bottlenecks and lane changes. 
+    \subsection{Obstacle}
     \subsubsection{Implementation}
+    In this section, we will implement an obstacle that obstruct the series of cars from moving along the road. This simulates a variety of scenarios such as debris and car crashes blocking the road or even a chicken crossing the road. After some period of time, we will remove the obstacle which allow the cars to move again. 
+
+    We follow the same implementation as in section (\ref{sec:homogeneous}) for the cars and road. To implement an obstacle, we create a virtual stationary vehicle with position $x=1200$, velocity $v=0$, and acceleration $a=0$. We never update this vehicle and so, the vehicle is always stationary. We initialize this vehicle at $t=30$ and remove it at $t=75$. 
     \subsubsection{Data}
     We present multiple graphs of position, velocity, acceleration, and gap. We also present graph about density and flow rate. Density is computed as 
     \begin{equation} 
@@ -248,25 +250,25 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       Q(x,t) = \frac{\Delta N}{\Delta t}
     \end{equation}
     where $\Delta N$ is the number of cars in the interval $[t, t +\Delta t]$. This measures how many cars are passing though a certain point in the time from $t$ to $t + \Delta t$. 
-    \begin{figure}[H]
+    \begin{figure}[H]\label{fig:homogeneousPos}
       \includegraphics[width=13cm]{BottleNeck1.eps}
       \centering
       \caption{Position versus time graph.}
   \end{figure}
 
-  \begin{figure}[H]
+  \begin{figure}[H]\label{fig:homogeneousVel}
     \includegraphics[width=13cm]{BottleNeck2.eps}
     \centering
     \caption{Velocity versus time graph}
   \end{figure}
 
-  \begin{figure}[H]
+  \begin{figure}[H]\label{fig:homogeneousAcc}
   \includegraphics[width=13cm]{BottleNeck3.eps}
   \centering
   \caption{Acceleration versus time graph}
   \end{figure}
 
-  \begin{figure}[H]
+  \begin{figure}[H]\label{fig:homogeneousGap}
   \includegraphics[width=13cm]{BottleNeck4.eps}
   \centering
   \caption{Gap versus time graph}
@@ -288,8 +290,13 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \end{figure}
 
     \subsubsection{Analysis}
+    We first examine the position, density, and flow rate of the cars. From figure (\ref{fig:homogeneousPos})
+
+    We now examine each car's deceleration. From figure (\ref{fig:homogeneousAcc}), the first car decelerate at $t=30$ which is when the obstacle appears. The other cars gradually decelerate following this. Roughly $6$ seconds later, the fifth car reach its maximum deceleration of $-3.4932$ m/s$^2$. Roughly $8$ seconds later, the tenth car reach its maximum deceleration of $-2.5861$ m/s$^2$. Roughly $8$ seconds later, the fifteenth car reach its maximum deceleration of $-2.2633$ m/s$^2$. Roughly $8$ seconds later, the last car reach its maximum deceleration of $-2.0998$ m/s$^2$. This phenomena is known as a stop-and-go wave [\cite{traffic}]. The effects of the first car stopping is not felt for the last car until much later. In this case, it took the wave to travel $30$ seconds to travel to the last car. Furthermore, the intensity of the braking lessen as the wave start with the first car and goes through to the last car. This suggests that given a sufficient number of cars and sufficient gaps between the cars, the wave would eventually die out. 
+
+      
+    TODO: how fast they exit out of the traffic jam (from v=0 to max v maybe), talk about graph of position, velocity, and acceleration (only show it for car 1,5,15,20 for velocity and acceleration), density and flow rate plot (talk about max density and how the flow rate is killed off basically) 
     \subsection{Lane Changes}
-    TODO: Average lane speed (How much faster is one lane with and without lane changes) and bottleneck revisted (make it from 2 lanes to one lane) and how number of lanes affect flow rate. The grass is greener on the other side paradox (in the textbook) 
     \subsubsection{Implementation}
 
    Lane changes are dealt with on a microscopic level, meaning that for in each timestep for each vehicle, we decided whether or not to change lanes.  In our model, we will only consider changing to adjacent lanes in a single time step (no sideways driving). So, in timestep $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
@@ -314,9 +321,9 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
       To check the incentive, we need to consider the gap in the current lane, the gap in the lane we want to switch to, and the velocities of the leading cars in both lanes. We only want to switch lanes if there is either a large gap in the other lane or if the leading car in the other lane is faster. Therefore, we can define a gap, $s_{\rm adv}$, that encapsulates the benefit of staying in the same lane. 
       
-      To prevent erratic lane changes, we also need to define an advantage threshold $\Delta a$ such that the vehicle will only change lanes if potential gain in acceleration is greater than $\Delta a$.  Left lanes are also usually designated as passing lanes, so right lanes are slower by convention. So, we introduce $a_{\rm bias}$ which lets our model prefer the left lane over the right one. 
+      To prevent erratic lane changes, we also need to  an advantage threshold $\Delta a$ such that the vehicle will only change lanes if potential gain in acceleration is greater than $\Delta a$.  Left lanes are also usually designated as passing lanes, so right lanes are slower by convention. So, we introduce $a_{\rm bias}$ which lets our model prefer the left lane over the right one. 
       
-      Combining all of the factors above gives us a measure of the cost of changing lanes:
+      Combining all of the factors above gives us a measure of the marginal cost of changing lanes:
       \begin{equation}
         s_{\rm adv} = s_{\alpha} + s_e\left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l})).\right]
       \end{equation}
@@ -336,7 +343,6 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
           \end{tabular}
           \end{center}
           \caption{Typical parameters for highway traffic for the lane changing algorithm. From page 244 in [\cite{traffic}]}
-          \label{fig:parameters}
       \end{figure}
 
       When adding the lane changing algorithm to our existing code, we must ensure that the order of the cars are tracked during every timestep because $a_{\rm mic}$ and the lane changing algorithm rely. If one car overtakes another, the array of cars will go out of order. We alleviated this by reordering our array of cars at the end of each timestep.  
@@ -354,19 +360,23 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \EndFor
         \end{algorithmic}
         \end{algorithm}
-    \subsubsection{Pitfall}
-    TODO: Talk about how lane change alg. can only change lanes from left to right (no capable of taking a bunch of costs at once and to get an advantage)
+    \subsubsection{Pitfall} \label{lane change pitfalls}
+
+    The major issue with the lane changing algorithm comes from the fact that we can only think one timestep ahead and look at one lane to the side. This means that our algorithm can't make tactical decisions like switching into a slow lane and then switching again to a fast lane. Because we extrapolate the gaps and velocities at the current timestep, we are effectively only thinking one timestep ahead too. So, lane changes are often short-sighted. This manifests in what we call \textit{lane oscillations} where a car will switch to a different lane and then switch back very quickly. 
+    
+    TODO: Add to the paragraph above.
+
     \subsection{Multi-lane Bottleneck}
     An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a three-lane highway are closed for maintenance. 
     \subsubsection{Implementation}
-    To implement the closure of two lanes, we placed two virtual stationary vehicles. One was at lane one with a width of 1100 and the front at 2000. The other vehicle was in lane two and had a width of 1000 with the front also at 2000. So, lane three was the lane that was left empty.
+    To implement the closure of two lanes, we placed two virtual stationary vehicles. One was at lane one with a length of 1100 and the front at 2000. The other vehicle was in lane two and had a length of 1000 with the front also at 2000. So, lane three was the lane that was left empty.
     \subsubsection{Data}
 
     \begin{figure}[H]
       \begin{center}
         \includegraphics[width=13cm]{mlbn_x.eps}
         \caption{Position versus time graph. Each line represents a single vehicle, and vehicles in all lanes are shown. Car 1 started in lane 3.}
-        \label{multi lane x}
+        \label{fig:multi lane x}
       \end{center}
     \end{figure}
 
@@ -374,7 +384,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_laneSpeed.eps}
         \caption{Mean speed of vehicles in each lane  }
-        \label{mean lane speed}
+        \label{fig:mean lane speed}
       \end{center}
     \end{figure}
 
@@ -382,6 +392,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_flow.pdf}
         \caption{Flow rate versus time (s) and position (m)}
+        \label{fig:multi lane flow}
       \end{center}
     \end{figure}
 
@@ -389,33 +400,35 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \begin{center}
         \includegraphics[width=13cm]{mlbn_density.pdf}
         \caption{Density versus time (s) and position (m)}
-        \label{num cars per lane}
+        \label{fig:multi lane density}
       \end{center}
     \end{figure}
-
-    TODO: Some way of representing lane data. Perhaps a heatmap with cars in y axis, time in x axis.
 
     \begin{figure}[H]
       \begin{center}
         \includegraphics[width=13cm]{mlbn_lanecars.eps}
         \caption{Number of cars per lane}
+        \label{fig:num cars per lane}
       \end{center}
     \end{figure}
     \subsubsection{Analysis}
 
-    In figure (\ref{multi lane x}), most of the cars appear to slow down before the roadblock at $x = 900$ except for Car one. This is likely caused by the cars in the front slowing down and changing to the empty lane in anticipation of the roadblock. Since Car one starts of in the empty lane and is the first car, it is able to avoid the traffic caused by lane changes farther back.
+    In figure (\ref{fig:multi lane x}), most of the cars appear to slow down before the roadblock at $x = 900$ except for Car one. This is caused by the cars in the front slowing down and changing to the empty lane in anticipation of the roadblock. Since car one starts of in the empty lane and is the first car, it is able to avoid the traffic caused by lane changes farther back.
    
-    From figure (\ref{mean lane speed}), the mean speed of cars in lane three are much higher than those in lanes one and two. There are a lot of sudden dips in $v-{\rm lane}$ for lane three and these dips correspond with sudden peaks in Lane two. This is caused by cars changing lane from two to three, hence cars in lane two speed up because of the larger gaps and cars in lane three decelerate to maintain a larger gap.
+    From figure (\ref{fig:mean lane speed}), the mean speed of cars in lane three are much higher than those in lanes one and two, as expected. There are a lot of sudden dips in $v_{\rm lane}$ for lane three and these dips correspond sudden peaks in lane two. This is caused by cars changing lane from lane two to three, hence cars in lane two accelerate and cars in lane three decelerate.
 
-    TODO: Interpret figure 11. We can see in Figure 11 that flow rate is much higher before the roadblock and it appears to spread out. In Flow rate graphs, intensity is conserved?
+   Looking at the flow heatmap in figure (\ref{fig:multi lane flow}), we observe a  flow rate that is much higher for $x$ values before the roadblock. After the roadblock, the flow spreads out in space and the slope increases, indicating faster moving cars and a lower density.
 
-    TODO: Interpret figure 12 or get rid of it.
+    The heatmap of density in figure (\ref{fig:multi lane density}) shows the same overall picture as figure (\ref{fig:multi lane flow}).
 
-    Figure (\ref{num cars per lane}) confirms that all cars eventually end up in lane three. There is a sharp decrease of cars in lane one at $t=50$ and a decrease of cars in lane two at $t = 70$. 
+    Figure (\ref{fig:num cars per lane}) confirms that all cars eventually end up in lane three. There is a sharp decrease of cars in lane one at $t=50$ and a decrease of cars in lane two at $t = 70$. We can also see \textit{lane oscillations} as discussed in (\ref{lane change pitfalls}).
 
     \section{Conclusion}
-    \section{Further Remarks}
+    In this paper, we have successfully implemented a microscopic car following model and lane changing algorithm and used it to analyze several common scenarios. The model we are using has some pitfalls, such as unrealistically large accelerations. However, it does help us understand the creation and propagation of stop-and-go waves in single lane traffic. Similarly, our lane changing algorithm 
+    
+  \newpage    
     \printunsrtglossary[type=symbols,style=long,title={List of Symbols and Constants}]
     \newpage 
     \printbibliography
+    \addcontentsline{toc}{section}{References}
 \end{document}

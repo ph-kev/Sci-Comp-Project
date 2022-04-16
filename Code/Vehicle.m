@@ -166,12 +166,10 @@ classdef Vehicle<handle
             % \param obj, car.
             % \param value to substitute in the inverse of v_opt.
             % \return se, value substituted in the verse of v_opt.
+            s_0 = obj.params(6);
             if v < 0
-                se = 0;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
-            elseif v > obj.params(2)
-                se = v;  % might need to change this back to obj.params(2)
+                se = s_0;  % not sure if we want this kind of behavior (don't know if it should be 0 or negative)
             else 
-                s_0 = obj.params(6);
                 T = obj.params(5);
                 se = s_0 + T * v;
             end
