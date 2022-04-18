@@ -6,17 +6,41 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
 
 \usetheme{Madrid}
 \usecolortheme{whale}
 
-\title[Presentation Name]{Presentation Name}
-\author[Kaeshav Danesh and Kevin Phan]{Kaeshav Danesh \& Kevin Phan}
+\title[An Investigation of a Car Following Model]{Check Your Gap or Become Scrap}
+\subtitle{An Investigation of a Car Following Model}
+\author[Kaeshav Danesh \& Kevin Phan]{Kaeshav Danesh \& Kevin Phan}
 \date{\today}
+
+% add table of contents after a section is done 
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
 
 \begin{document}
 
 \frame{\titlepage}
+
+\begin{frame}
+    \frametitle{Table of Contents}
+    \tableofcontents
+    \end{frame}
+
+\section{Introduction}
 
 \begin{frame}
 \frametitle{Introduction}
