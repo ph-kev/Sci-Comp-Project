@@ -13,6 +13,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
+\usepackage{caption}
 
 \newfloat{algorithm}{H}{lop} % flaot the alg environment
 
@@ -150,8 +151,8 @@
 \begin{frame}
   \frametitle{Forward Euler Method Scheme}
   \begin{align*}
-    v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t \\
-    x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t
+    v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t, \\
+    x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t.
 \end{align*}
 \end{frame}
 
