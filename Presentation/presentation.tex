@@ -177,7 +177,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Pseudocode for FVDM}
+  \frametitle{Pseudocode for the FVDM}
   \begin{algorithm}
     \caption{Simplified algorithm for FDVM with lane changes}\label{alg:car-following-lane}
     \begin{algorithmic}
@@ -200,11 +200,32 @@
 \begin{frame}
   \frametitle{Homogeneous Traffic}
   \begin{figure}[H]
-    \includegraphics[width=4.5cm]{HomogeneousTraffic1.eps}
-    \includegraphics[width=4.5cm]{HomogeneousTraffic2.eps}
-    \includegraphics[width=4.5cm]{HomogeneousTraffic3.eps}
-    \includegraphics[width=4.5cm]{HomogeneousTraffic4.eps}
-    \caption{Position, velocity, acceleration, and gap versus time}
+    \includegraphics[width=8cm]{HomogeneousTraffic1.eps}
+    \caption{Position versus time} 
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Homogeneous Traffic}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{HomogeneousTraffic2.eps}
+    \caption{Velocity versus time}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Homogeneous Traffic}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{HomogeneousTraffic3.eps}
+    \caption{Acceleration versus time}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Homogeneous Traffic}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{HomogeneousTraffic4.eps}
+    \caption{Gap versus time}
 \end{figure}
 \end{frame}
 
@@ -213,22 +234,66 @@
 \begin{frame}
   \frametitle{Obstacle}
   \begin{figure}[H]
-    \includegraphics[width=4.5cm]{BottleNeck1.eps}
-    \includegraphics[width=4.5cm]{BottleNeck5.eps}
-    \includegraphics[width=4.5cm]{BottleNeck6.eps}
-    \includegraphics[width=4.5cm]{BottleNeck7.eps}
-    \caption{Position versus time graph.}
-    \label{fig:obstaclePos}
+    \includegraphics[width=8cm]{BottleNeck1.eps}
+    \caption{Position versus time} 
 \end{figure}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Obstacle}
+  \begin{figure}[H]
+    \includegraphics[width=5.5cm]{BottleNeck5.eps}
+    \includegraphics[width=5.5cm]{BottleNeck6.eps}
+    \caption{Left to right: density vs time and distance; flow rate vs time and distance}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Obstacle}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{BottleNeck7.eps}
+    \caption{Mean velocity of traffic with and without an obstacle.}
+  \end{figure}
+\end{frame}
+
 
 \subsection{Multi-lane Bottleneck}
 
 \begin{frame}
   \frametitle{Multi-lane Bottleneck}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{mlbn_x.eps}
+\end{figure}
 \end{frame}
 
 \begin{frame}
+  \frametitle{Multi-lane Bottleneck}
+  \begin{figure}[H]
+    \includegraphics[width=5.5cm]{mlbn_laneSpeed.eps}
+    \includegraphics[width=5.5cm]{mlbn_lanecars.eps}
+    \caption{Left to right: Mean velocity in each lane vs time; number of cars in each lane vs time}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Multi-lane Bottleneck}
+  \begin{figure}[H]
+    \includegraphics[width=5.5cm]{mlbn_density.pdf}
+    \includegraphics[width=5.5cm]{mlbn_flow.pdf}
+    \caption{Left to right: density vs time and distance; flow rate vs time and distance}
+\end{figure}
+\end{frame}
+
+
+\section{Conclusion}
+\begin{frame}
   \frametitle{Conclusion}
+  \begin{itemize}
+    \item The FVDM with lane changes can model traffic flow and lets us examine how it can be interrupted by obstacles and bottlenecks. 
+
+    \item Pitfalls in the model include unrealistic accelerations and erratic lane changes.
+    
+    \item Future work could model priority lanes and roundabouts
+  \end{itemize}
 \end{frame}
 \end{document}
