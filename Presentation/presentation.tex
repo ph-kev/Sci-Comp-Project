@@ -54,7 +54,12 @@
 \begin{itemize}
   \item Traffic flow theory deals with modeling vehicular flow.  
   \item Focus on microscopic model which model cars as a single unit.
-  \item Examine scenarios of homogeneous traffic, obstacles, and multi-lane bottleneck. 
+  \item Goal: Model and examine 
+  \begin{enumerate}
+    \item Homogeneous traffic
+    \item  Obstacles on a road
+    \item Multi-lane bottleneck
+  \end{enumerate} 
 \end{itemize}
 \end{frame}
 
@@ -139,7 +144,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Graph of Optimal Velocity Function}
+  \frametitle{Optimal Velocity Function}
   \begin{figure}[H]
     \includegraphics[width=9cm]{vopt_versus_s.eps}
     \centering
@@ -149,7 +154,8 @@
 
 \section{Implementation}
 \begin{frame}
-  \frametitle{Forward Euler Method Scheme}
+  \frametitle{Forwards Euler Method Scheme}
+  During lane changes, the acceleration function is not continuous, so Euler's Method would be the most stable:
   \begin{align*}
     v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t, \\
     x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t.
@@ -157,16 +163,32 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Lane Changes}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{lane_change_diagram.PNG}
+    \centering
+    \caption{Multi-lane notation. From Treiber and Kesting \textit{Traffic Flow Dynamics}}
+\end{figure}
+  Define minimum $\hat s_{\hat f}$ and $\hat s_{\alpha}$ needed to change lanes: 
+  \begin{align*}
+    s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right],\\
+    s_{\rm adv} = s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right].
+  \end{align*}
+\end{frame}
+
+\begin{frame}
   \frametitle{Pseudocode for FVDM}
   \begin{algorithm}
-    \caption{Simplified algorithm for FDVM}
+    \caption{Simplified algorithm for FDVM with lane changes}\label{alg:car-following-lane}
     \begin{algorithmic}
     \Require Initial state variables for each car at $t=0$. 
     \Require carArr, an array of cars.
     \For{$i = 1:$numsteps}{}
     \For{$j =$ length(carArr):$-1$:$1$}{}
       \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
+      \State New lane of $j$th car $\gets$ carArr($j$).changeLane()
       \EndFor
+      \State sort(carArr)
     \EndFor
     \end{algorithmic}
     \end{algorithm}
@@ -177,17 +199,36 @@
 
 \begin{frame}
   \frametitle{Homogeneous Traffic}
+  \begin{figure}[H]
+    \includegraphics[width=4.5cm]{HomogeneousTraffic1.eps}
+    \includegraphics[width=4.5cm]{HomogeneousTraffic2.eps}
+    \includegraphics[width=4.5cm]{HomogeneousTraffic3.eps}
+    \includegraphics[width=4.5cm]{HomogeneousTraffic4.eps}
+    \caption{Position, velocity, acceleration, and gap versus time}
+\end{figure}
 \end{frame}
 
 \subsection{Obstacle}
 
 \begin{frame}
   \frametitle{Obstacle}
+  \begin{figure}[H]
+    \includegraphics[width=4.5cm]{BottleNeck1.eps}
+    \includegraphics[width=4.5cm]{BottleNeck5.eps}
+    \includegraphics[width=4.5cm]{BottleNeck6.eps}
+    \includegraphics[width=4.5cm]{BottleNeck7.eps}
+    \caption{Position versus time graph.}
+    \label{fig:obstaclePos}
+\end{figure}
 \end{frame}
 
 \subsection{Multi-lane Bottleneck}
 
 \begin{frame}
   \frametitle{Multi-lane Bottleneck}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Conclusion}
 \end{frame}
 \end{document}

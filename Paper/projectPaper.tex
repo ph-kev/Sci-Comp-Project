@@ -327,7 +327,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that $\hat s_{\hat f}$ is smaller than a predefined safe gap. This minimum gap is dependent on factors like the velocities of the vehicles and the reaction time of the drivers. 
       Considering this, we can define a minimum safe gap as 
       \begin{equation}
-        s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\hat a}) \right]
+        s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right]
       \end{equation}
       where $b_{\rm safe}$ is the limit for a safe deceleration and $\tau$ is the adaptation time. 
 
@@ -345,7 +345,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
       Combining all of the factors above gives us a measure of the opportunity cost of changing lanes:
       \begin{equation}
-        s_{\rm adv} = s_{\alpha} + s_e\left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l})).\right]
+        s_{\rm adv} = s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right].
       \end{equation}
 
       So, a vehicle can only change lanes if $\hat s_{\hat f} > s_{\rm safe}$ and $\hat s_{\alpha} > s_{\rm adv}$. 
