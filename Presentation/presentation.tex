@@ -15,6 +15,8 @@
 \usepackage{graphicx}
 \usepackage{caption}
 
+\usefonttheme{professionalfonts}
+
 \newfloat{algorithm}{H}{lop} % flaot the alg environment
 
 \setbeamertemplate{caption}[numbered]
@@ -167,13 +169,14 @@
   \begin{figure}[H]
     \includegraphics[width=8cm]{lane_change_diagram.PNG}
     \centering
-    \caption{Multi-lane notation. From Treiber and Kesting \textit{Traffic Flow Dynamics}}
+    \caption{Multi-lane notation. From Treiber and Kesting \textit{Traffic Flow Dynamics}}.
 \end{figure}
   Define minimum $\hat s_{\hat f}$ and $\hat s_{\alpha}$ needed to change lanes: 
   \begin{align*}
     s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right],\\
-    s_{\rm adv} = s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right].
+    s_{\rm adv} = s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right],
   \end{align*}
+  where $b_{\rm safe}$ is the  deceleration limit, $\Delta a$ is the changing threshold, and $a_{\rm bias}$ is a preference for left lanes. 
 \end{frame}
 
 \begin{frame}
@@ -201,7 +204,7 @@
   \frametitle{Homogeneous Traffic}
   \begin{figure}[H]
     \includegraphics[width=8cm]{HomogeneousTraffic1.eps}
-    \caption{Position versus time} 
+    \caption{Position versus time.} 
 \end{figure}
 \end{frame}
 
@@ -209,7 +212,7 @@
   \frametitle{Homogeneous Traffic}
   \begin{figure}[H]
     \includegraphics[width=8cm]{HomogeneousTraffic2.eps}
-    \caption{Velocity versus time}
+    \caption{Velocity versus time.}
 \end{figure}
 \end{frame}
 
@@ -217,7 +220,7 @@
   \frametitle{Homogeneous Traffic}
   \begin{figure}[H]
     \includegraphics[width=8cm]{HomogeneousTraffic3.eps}
-    \caption{Acceleration versus time}
+    \caption{Acceleration versus time.}
 \end{figure}
 \end{frame}
 
@@ -225,7 +228,7 @@
   \frametitle{Homogeneous Traffic}
   \begin{figure}[H]
     \includegraphics[width=8cm]{HomogeneousTraffic4.eps}
-    \caption{Gap versus time}
+    \caption{Gap versus time.}
 \end{figure}
 \end{frame}
 
@@ -235,7 +238,7 @@
   \frametitle{Obstacle}
   \begin{figure}[H]
     \includegraphics[width=8cm]{BottleNeck1.eps}
-    \caption{Position versus time} 
+    \caption{Position versus time.} 
 \end{figure}
 \end{frame}
 
@@ -244,7 +247,7 @@
   \begin{figure}[H]
     \includegraphics[width=5.5cm]{BottleNeck5.eps}
     \includegraphics[width=5.5cm]{BottleNeck6.eps}
-    \caption{Left to right: density vs time and distance; flow rate vs time and distance}
+    \caption{Left to right: density vs time and distance; flow rate vs time and distance.}
 \end{figure}
 \end{frame}
 
@@ -263,6 +266,7 @@
   \frametitle{Multi-lane Bottleneck}
   \begin{figure}[H]
     \includegraphics[width=8cm]{mlbn_x.eps}
+    \caption{Position versus time.} 
 \end{figure}
 \end{frame}
 
@@ -271,7 +275,7 @@
   \begin{figure}[H]
     \includegraphics[width=5.5cm]{mlbn_laneSpeed.eps}
     \includegraphics[width=5.5cm]{mlbn_lanecars.eps}
-    \caption{Left to right: Mean velocity in each lane vs time; number of cars in each lane vs time}
+    \caption{Left to right: mean velocity in each lane vs time; number of cars in each lane vs time.}
 \end{figure}
 \end{frame}
 
@@ -280,7 +284,7 @@
   \begin{figure}[H]
     \includegraphics[width=5.5cm]{mlbn_density.pdf}
     \includegraphics[width=5.5cm]{mlbn_flow.pdf}
-    \caption{Left to right: density vs time and distance; flow rate vs time and distance}
+    \caption{Left to right: density vs time and distance; flow rate vs time and distance.}
 \end{figure}
 \end{frame}
 
@@ -294,6 +298,15 @@
     \item Pitfalls in the model include unrealistic accelerations and erratic lane changes.
     
     \item Future work could model priority lanes and roundabouts.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Refrences}
+  \begin{itemize}
+    \item David E. Stewart. \textit{Dynamics with Inequalities.} SIAM, 2011. 
+    \item Martin Treiber and Arne Kesting. \textit{Traffic Flow Dynamics: Data,
+    Models and Simulation.} Berlin Heidelberg: Springer, 2013.
   \end{itemize}
 \end{frame}
 \end{document}
