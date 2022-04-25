@@ -29,7 +29,7 @@
 \title[An Investigation of a Car Following Model]{Check Your Gap or Get Scrapped}
 \subtitle{An Investigation of a Car Following Model}
 \author[Kaeshav Danesh \and Kevin Phan]{Kaeshav Danesh \and Kevin Phan}
-\date{\today}
+\date{April 27, 2022}
 
 % add table of contents after a section is done 
 \AtBeginSection[]
@@ -57,11 +57,11 @@
   \item Traffic flow theory deals with modeling vehicular flow.  
   \item Focus on microscopic model which model cars as a single unit.
   \item Goal: Model and examine 
-  \begin{enumerate}
+  \begin{itemize}
     \item Homogeneous traffic
-    \item  Obstacles on a road
+    \item Obstacles on a road
     \item Multi-lane bottleneck
-  \end{enumerate} 
+  \end{itemize} 
 \end{itemize}
 \end{frame}
 
@@ -128,7 +128,7 @@
 \begin{frame}
   \frametitle{Full Velocity Difference Model}
   \begin{gather*}
-      a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s) - v_\alpha}{\tau} - \gamma \Delta v, \\
+      a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s_\alpha) - v_\alpha}{\tau} - \gamma \Delta v, \\
       v_{\rm opt} (s) = \max \left( 0, \min \left( v_0, \frac{s-s_0}{T} \right) \right).
   \end{gather*}
   \centerline{\rule{0.8\linewidth}{.2pt}}
@@ -173,8 +173,8 @@
 \end{figure}
   Define minimum $\hat s_{\hat f}$ and $\hat s_{\alpha}$ needed to change lanes: 
   \begin{align*}
-    s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right],\\
-    s_{\rm adv} = s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right],
+    s_{\rm safe} (v_{\hat f}, v_{\alpha}) &= v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right],\\
+    s_{\rm adv}(s_\alpha, v_l, v_{\hat l}) &= s_{\alpha} + v_{\rm opt}^{-1} \left[\tau(\Delta a + a_{\rm bias} + \gamma(v_l - v_{\hat l}))\right],
   \end{align*}
   where $b_{\rm safe}$ is the  deceleration limit, $\Delta a$ is the changing threshold, and $a_{\rm bias}$ is a preference for left lanes. 
 \end{frame}
@@ -199,6 +199,15 @@
 \section{Examining Scenarios}
 
 \subsection{Homogeneous Traffic}
+
+\begin{frame}
+  \frametitle{Homogeneous Traffic Implementation}
+  \begin{itemize}
+    \item A line of 10 equally spaced cars on a single lane.
+    \item Initial velocity is $0$ m/s. 
+    \item Cars will begin to slow down when they reach $x_{\rm destination} = 2000$.
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{Homogeneous Traffic}
@@ -235,10 +244,26 @@
 \subsection{Obstacle}
 
 \begin{frame}
+  \frametitle{Obstacle Implementation}
+  \begin{itemize}
+    \item Same conditions as in homogeneous traffic. 
+    \item However, we add an obstacle at $x=1200$ at time $t=30$ and remove it at $t=75$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Obstacle}
   \begin{figure}[H]
     \includegraphics[width=8cm]{BottleNeck1.eps}
     \caption{Position versus time.} 
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Obstacle}
+  \begin{figure}[H]
+    \includegraphics[width=8cm]{BottleNeck3.eps}
+    \caption{Acceleration versus time.} 
 \end{figure}
 \end{frame}
 
@@ -261,6 +286,14 @@
 
 
 \subsection{Multi-lane Bottleneck}
+
+\begin{frame}
+  \frametitle{Multi-lane Bottleneck Implementation}
+  \begin{itemize}
+    \item Same conditions as in homogeneous traffic expect with three lanes and $20$ cars.
+    \item Two lanes of a three-lane highway are closed. 
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
   \frametitle{Multi-lane Bottleneck}
@@ -294,9 +327,7 @@
   \frametitle{Conclusion}
   \begin{itemize}
     \item The FVDM with lane changes can model traffic flow and lets us examine how it can be interrupted by obstacles and bottlenecks. 
-
     \item Pitfalls in the model include unrealistic accelerations and erratic lane changes.
-    
     \item Future work could model priority lanes and roundabouts.
   \end{itemize}
 \end{frame}
