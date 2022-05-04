@@ -15,6 +15,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{graphicx}
+\usepackage{enumitem}
 \usepackage[nottoc,numbib]{tocbibind}
 \graphicspath{{./figures/}}
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,matrix}
@@ -67,7 +68,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \section{Introduction}
     How does an obstacle affect a series of vehicles? What impact does changing a road from multiple lanes to one lane have on a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
 
-    Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by treating them as an entire unit. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete variables, or continuous variables. Some applications of traffic flow models include navigation systems, traffic light calibration, and calculating carbon emissions from traffic. 
+    Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by modeling the state of each vehicle. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete variables, or continuous variables. Some applications of traffic flow models include navigation systems, traffic light calibration, and calculating carbon emissions from traffic. 
 
     Our paper will focus only on the microscopic model called the Full Velocity Difference model. Using this model, we will explore scenarios including obstacles, and lane changes. From this, we will analyze state variables including position and velocity, and other metrics such as density and flow rate. 
     % Some questions to answer:
@@ -83,7 +84,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \begin{equation} 
           s_\alpha = x_{\alpha - 1} - l_{\alpha -1}  - x_{\alpha}
         \end{equation}
-        where $x_{\alpha - 1}$ is the position of car $\alpha - 1$, $l_{\alpha - 1}$ is the length of car $\alpha - 1$, and $x_\alpha$ is the position of car $\alpha$. We note that the gap is not defined for a vehicle with no vehicles in front of it. 
+        where $x_{\alpha - 1}$ is the position of car $\alpha - 1$, $l_{\alpha - 1}$ is the length of car $\alpha - 1$, and $x_\alpha$ is the position of car $\alpha$. Note that the gap for a vehicle is undefined if there is no vehicle in front of it. 
         \begin{figure}[H]
             \begin{tikzpicture}[scale=1.55]
                 \draw (-0.3,-0.3) -- (7.3,-0.3);
@@ -122,7 +123,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
             \centering
             \caption{Defining index, position, velocity, and gap of a car.}
         \end{figure}  
-        For simpler notation, we will now refer to the vehicle in front of vehicle $\alpha$ by the leader vehicle $l$. For a single lane, car $l$ is vehicle $\alpha - 1$. However, it is not necessarily true that vehicle $l$ is vehicle $\alpha - 1$ for multiple lanes. 
+        For simpler notation, we will refer to the vehicle in front of vehicle $\alpha$ by the leader vehicle $l$. For a single lane, car $l$ is vehicle $\alpha - 1$. However, vehicle $l$ is not necessarily vehicle $\alpha - 1$ for multiple lanes. 
 
         Taking the time derivatives of $x_\alpha (t)$ and $v_\alpha (t)$ lead to the general coupled differential equation describing velocity and acceleration respectively: 
         \begin{align} 
@@ -136,18 +137,17 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     Our model is only smooth to first order because sudden changes in acceleration are common, for example, during lane changes. 
     So, using a high order method could be worse than a simple first order method.
 
-    Among first order methods, our options are either the forward or backwards (implicit) Euler methods. The main difference between these methods is that the backwards Euler method involves solving an implicit equation and is generally more stable.
+    Among first order methods, our options are either the forward or backwards (implicit) Euler methods. The main difference between these methods is that the backwards Euler method involves solving an implicit equation and is generally more stable. 
+    We are using the forward Euler method because we expect our solution to be stable and solving an implicit equation every time step would add extra complexity to our implementation.
 
-    We are using the forward Euler method because we expect our solution to be stable and solving an implicit equation every timestep would add extra complexity to our implementation.
-
-    Implementing the forwards Euler method scheme for a car following model gives us two coupled differential equations for each of our state variables:
+    The forwards Euler method scheme, as described in page 161 of \cite{traffic}, gives us two coupled differential equations for each of our state variables:
     \begin{align}
         v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t, \label{num_eq1}\\
         x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t \label{num_eq2},
     \end{align}
-    where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used \cite{traffic}. This acceleration function is described in section (\ref{ch3.1}).
+    where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used.  This acceleration function is described in section (\ref{ch3.1}).
 
-    When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each timestep, it would be simpler to start from the backmost car and work up. This allows us to use the velocity value at time $t$ from the leading car.     
+    When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each time step, it would be simpler to start from the backmost car and work up. This allows us to use the velocity value at time $t$ from the leading car.     
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     We followed the details of the Full Velocity Difference Model in \S 10.6 and \S 10.7 of \cite{traffic}. The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
@@ -162,13 +162,14 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \end{equation}
     where $v_0$ is the desired speed, $s_0$ is the minimum distance gap, and $T$ is the time gap. 
 
-    There are properties that an optimal velocity function should have if it were to model traffic flow. These properties are 
-    \begin{align*}
-      v_{\rm opt} ' &\geq 0, \\
-      v_{\rm 0} (0) &= 0, \\
-      \lim_{s \rightarrow \infty} v_{\rm opt} (s) &= v_0. 
-    \end{align*}
-    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car get closer to its leading car, the optimal velocity should decrease or remain constant. The second property ensure that car crashes do not occur as if the gap is $0$, then the car should not move. The third property means that when the car is far away for the leading car, the optimal velocity is the desired speed $v_0$. This usually is taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies there properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen due to its simplicity.
+    There are properties that an optimal velocity function should have if it were to model traffic flow. These properties are
+      
+    \begin{enumerate}[leftmargin=3\parindent]
+      \item[i.] $v_{\rm opt} ' \geq 0$,
+      \item[ii.] $v_{\rm 0} (0) = 0$,
+      \item[iii.] $\lim_{s \rightarrow \infty} v_{\rm opt} (s) = v_0$. 
+    \end{enumerate}
+    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car gets closer to its leading car, the optimal velocity should decrease or remain constant. The second property reduces the risk of car crashes if the gap is $0$ by ensuring that the car does not move. The third property means that when the car is far away from the leading car, the optimal velocity is the desired speed $v_0$. This usually is taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies there properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen for its simplicity.
     
     Typical parameters for highway traffic for the FVDM is given in the table below. 
     \begin{figure}[H]
@@ -197,7 +198,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     Analyzing equation (\ref{a_mic}), $v_{\rm opt} (s) - v_\alpha$ is positive if $v_{\rm opt} (s) > v_\alpha$. So, the car has not reached its optimal velocity and acceleration is positive. Similarly, if  $v_{\rm opt} (s) < v_\alpha$, $v_{\rm opt} (s) - v_\alpha$ is negative, hence the car is decelerating to reach its optimal velocity. If $v_{\rm opt} (s) = v_\alpha$, then $a_{\rm mic} = 0$. The adaptation time $\tau$ determines how fast the car accelerates or decelerates, affecting the time it takes for the car to reach its optimal velocity. The term $-\gamma \Delta v$ is positive if $v_\alpha < v_l$ and negative if $v_\alpha > v_l$. This leads to more acceleration if the car is trying to catch up to the leader car and less acceleration if the car is trying to slow down due to the leader car's slower velocity. 
   
     \subsection{Implementation}\label{sec:implementation}
-    We first initialize initial conditions for the state variables of the vehicles. We store the vehicles in an array and iterate through them. As described in section (\ref{num_sch}), we iterate through the vehicles starting with the last vehicle with respect to position and go through in ascending order. We update the state variables of the cars using equations (\ref{num_eq1}), (\ref{num_eq2}), and (\ref{a_mic}). We repeat this process for the number of iterations required. 
+    First, we set initial conditions for the state variables of the vehicles. Then, we store the vehicles in an array and iterate through them at each time step. As described in section (\ref{num_sch}), we iterate through the vehicles starting with the last vehicle with respect to position and go through in ascending order. We update the state variables of the cars using equations (\ref{num_eq1}), (\ref{num_eq2}), and (\ref{a_mic}). We repeat this process for the number of time steps required. 
     \begin{algorithm}
       \caption{Simplified algorithm for FDVM}\label{alg:car-following}
       \begin{algorithmic}
@@ -205,7 +206,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \Require carArr, an array of cars.
       \For{$i = 1:$numsteps}{}
       \For{$j =$ length(carArr):$-1$:$1$}{}
-        \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
+        \State State variables of $j$th car $\gets$ Update $j$th car by a time step.
         \EndFor
       \EndFor
       \end{algorithmic}
@@ -213,7 +214,15 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
       Throughout this project, we have used a time step of 0.01 seconds because when varying this parameter for our most complex scenario (see section \ref{multi lane bottleneck}), we found there was no difference between 0.1 and 0.01 seconds. In this case, we chose the time step to prioritize consistent results, but it could be larger or smaller depending on how the model is being used.
       
-    We still have not addressed how to update the state variables of the first car. Equation (\ref{a_mic}) needs values for the car's gap, $s_\alpha$, and the velocity of the leader car, $v_l$. However, the first car does not have a leader car. To resolve this, we impose a destination for the cars. We use this value in the calculation of gap $s_\alpha$ by computing $x_\alpha - x_{\rm destination}$. For the situation of the velocity of the leader car, it might be reasonable to set it to set $v_l = 0$. However, if $v_l=0$, then the term $-\gamma \Delta v$ blows up. In other words, this car is too wary of crashing into the destination. To resolve this problem, it is best to set $v_l = v_\alpha$ which ensure that the term $-\gamma \Delta v$ is $0$. However, we note that this will cause a small problem in our simulation. We will address this in section (\ref{sec:homogeneous_pitfal}). 
+    We still have not addressed how to update the state variables of the first car. 
+    Equation (\ref{a_mic}) needs values for the car's gap, $s_\alpha$, and the velocity of the leader car, $v_l$. 
+    However, the first car does not have a leader car, so, we impose a destination for the cars: $x_{\rm destination}$. 
+    The destination allows the first car to have the gap $s_{N} = x_{N} - x_{\rm destination}$. 
+    To define a velocity, it might seem reasonable to set it to set $v_l = 0$. 
+    However, if $v_l=0$, then the term $-\gamma \Delta v$ blows up. 
+    In other words, this car is too wary of crashing into the destination. 
+    To resolve this problem, it is best to set $v_l = v_{N}$ which ensure that the term $-\gamma \Delta v$ is $0$. 
+    However, this causes unexpected behavior with the first car's deceleration which will be addressed in section (\ref{sec:homogeneous_pitfal}). 
     
     
     \section{Examining Different Scenarios}
@@ -340,7 +349,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsection{Lane Changes}
     \subsubsection{Implementation}\label{sec:laneChangeImplementation}
 
-   Lane changes are dealt with on a microscopic level, meaning that at we decided whether or not to change lanes at every timestep for every vehicle.  In our model, we will only consider changing to adjacent lanes in a single time step. So, at time $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
+   Lane changes are dealt with on a microscopic level, meaning that at we decided whether or not to change lanes at every time step for every vehicle.  In our model, we will only consider changing to adjacent lanes in a single time step. So, at time $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
 
       \begin{figure}[H]
         \begin{center}
@@ -392,7 +401,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
           \caption{Typical parameters for highway traffic for the lane changing algorithm. From page 244 in \cite{traffic}}
       \end{figure}
 
-      When adding the lane changing algorithm to our existing code, we must ensure that the order of the cars are tracked during every timestep because $a_{\rm mic}$ and the lane changing algorithm use the state of the leading and following cars. If one car overtakes another, the array of cars will go out of order. We alleviated this by reordering our array of cars at the end of each timestep.  
+      When adding the lane changing algorithm to our existing code, we must ensure that the order of the cars are tracked during every time step because $a_{\rm mic}$ and the lane changing algorithm use the state of the leading and following cars. If one car overtakes another, the array of cars will go out of order. We alleviated this by reordering our array of cars at the end of each time step.  
       \begin{algorithm}
         \caption{Simplified algorithm for FDVM with lane changes}\label{alg:car-following-lane}
         \begin{algorithmic}
@@ -400,7 +409,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \Require carArr, an array of cars.
         \For{$i = 1:$numsteps}{}
         \For{$j =$ length(carArr):$-1$:$1$}{}
-          \State State variables of $j$th car $\gets$ Update $j$th car by a timestep.
+          \State State variables of $j$th car $\gets$ Update $j$th car by a time step.
           \State New lane of $j$th car $\gets$ carArr($j$).changeLane()
           \EndFor
           \State sort(carArr)
@@ -409,7 +418,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \end{algorithm}
     \subsubsection{Pitfall} \label{lane change pitfalls}
 
-    The major issue with the lane changing algorithm comes from the fact that we can only think one timestep ahead and look at one lane to the side. This means that our algorithm can't make tactical decisions like switching into a slow lane and then switching again to a fast lane. Because we extrapolate the gaps and velocities at the current timestep, we are effectively only thinking one timestep ahead too. So, lane changes are often short-sighted. This manifests in erratic lane changes where a car will switch to a different lane and then switch back very quickly. 
+    The major issue with the lane changing algorithm comes from the fact that we can only think one time step ahead and look at one lane to the side. This means that our algorithm can't make tactical decisions like switching into a slow lane and then switching again to a fast lane. Because we extrapolate the gaps and velocities at the current time step, we are effectively only thinking one time step ahead too. So, lane changes are often short-sighted. This manifests in erratic lane changes where a car will switch to a different lane and then switch back very quickly. 
     
     \subsection{Multi-lane Bottleneck}\label{multi lane bottleneck}
     An example of a multi-lane bottleneck is construction on the side of a highway. We can examine what happens when two lanes of a three-lane highway are closed for maintenance. 
@@ -469,7 +478,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     Figure (\ref{fig:num cars per lane}) confirms that all cars eventually end up in lane three. There is a sharp decrease of cars in lane one at $t=50$ and a decrease of cars in lane two at $t = 70$. We can also see erratic lane changes as discussed in (\ref{lane change pitfalls}).
 
     \section{Conclusion}
-    In this paper, we have successfully implemented a microscopic car following model and lane changing algorithm and used it to analyze several common scenarios. The model we are using has some pitfalls, such as unrealistically large accelerations. However, it does help us understand the creation and propagation of stop-and-go waves in single lane traffic. Similarly, our lane changing algorithm can only look ahead one timestep and look across one lane. Despite this, it still illustrates traffic flow bottlenecks when lanes in a highway are closed.
+    In this paper, we have successfully implemented a microscopic car following model and lane changing algorithm and used it to analyze several common scenarios. The model we are using has some pitfalls, such as unrealistically large accelerations. However, it does help us understand the creation and propagation of stop-and-go waves in single lane traffic. Similarly, our lane changing algorithm can only look ahead one time step and look across one lane. Despite this, it still illustrates traffic flow bottlenecks when lanes in a highway are closed.
 
     Our paper is only the tip of the iceberg. The car following model is rather powerful and can be used to study many other traffic phenomena. Future iterations of this project could explore cars entering a priority road and the flow of traffic in a roundabout.
     
