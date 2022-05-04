@@ -146,16 +146,12 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used \cite{traffic}. This acceleration function is described in section (\ref{ch3.1}).
 
     When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each timestep, it would be simpler to start from the backmost car and work up. This allows us to use the velocity value at time $t$ from the leading car.     
-
     \section{Car Following Model}
     \subsection{Full Velocity Difference Model}\label{ch3.1}
     We followed the details of the Full Velocity Difference Model in \S 10.6 and \S 10.7 of \cite{traffic}. The Full Velocity Difference Model (FVDM) is given by the acceleration function: 
     \begin{equation}\label{a_mic}
-      a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s) - v_\alpha}{\tau} - \gamma \Delta v 
+      a_{\rm mic}(s_\alpha,v_\alpha,v_l) = \frac{v_{\rm opt} (s_\alpha) - v_\alpha}{\tau} - \gamma \Delta v 
     \end{equation}
-
-    TODO: $s$ to $s_\alpha$.
-
     where $v_{\rm opt}$ is the optimal velocity function, $\tau$ is the speed adaptation time, $\gamma$ is the speed difference sensitivity, and $\Delta v = v_\alpha - v_l$ is the difference of velocities between car $\alpha$ and the leading car.
     
     A reasonable choice for $v_{\rm opt}$ is 
@@ -164,6 +160,12 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \end{equation}
     where $v_0$ is the desired speed, $s_0$ is the minimum distance gap, and $T$ is the time gap. 
 
+    There are properties that an optimal velocity function should have if it were to model traffic flow. These properties are 
+    \begin{align*}
+      v_{\rm opt} ' &\geq 0, \\
+      v_{\rm 0} &= 0, \\
+      \lim_{s \rightarrow \infty} v_{\rm opt} (s) &= v_0. 
+    \end{align*}
     Typical parameters for highway traffic for the FVDM is given in the table below. 
     \begin{figure}[H]
       \begin{center}
@@ -180,7 +182,6 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         \caption{Typical parameters for highway traffic for the FVDM. From page 170 in \cite{traffic}.}
         \label{fig:parameters}
     \end{figure}
-    
     We now examine how different parameters of the optimal velocity function affect the graph. 
     \begin{figure}[H]
         \includegraphics[width=11cm]{vopt_versus_s.pdf}
