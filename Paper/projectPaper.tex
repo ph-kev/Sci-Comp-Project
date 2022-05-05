@@ -56,7 +56,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \maketitle
 
     \begin{abstract}
-      Microscopic car following models can be used to model traffic flow dynamics as individual units. The Full Velocity Difference Model accounts for the gap and velocities between cars. In this paper, we will implement the Full Velocity Difference Model numerically along with a lane changing algorithm. We will use this model to analyze traffic flow that is homogeneous, blocked by an obstacle, and bottlenecked by a decrease in the number of lanes.
+      In traffic flow theory, microscopic car following models model the vehicles as individual units. The Full Velocity Difference Model is a microscopic car following model that accounts for the gap and velocities between cars. In this paper, we will implement the Full Velocity Difference Model numerically along with a lane changing algorithm. We will use this model to analyze traffic flow that is homogeneous, blocked by an obstacle, and bottlenecked by a decrease in the number of lanes.
     \end{abstract}
 
     \newpage
@@ -68,7 +68,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \section{Introduction}
     How does an obstacle affect a series of vehicles? What impact does changing a road from multiple lanes to one lane have on a series of cars? To answer these questions, our paper will describe a basic microscopic car following model from traffic flow theory, implement these scenarios, and analyze them. 
 
-    Traffic flow models can be categorized as microscopic or macroscopic models [\cite{hisTraffic}]. Microscopic models describe vehicles on the individual level by modeling the state of each vehicle. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete variables, or continuous variables. Some applications of traffic flow models include navigation systems, traffic light calibration, and calculating carbon emissions from traffic. 
+    Traffic flow models can be categorized as microscopic or macroscopic models \cite{hisTraffic}. Microscopic models describe vehicles on the individual level by modeling the state of each vehicle. Meanwhile, macroscopic models treat vehicles as a continuum. Further classifications can be done through the model equations such as partial differential equations, discrete equations, discrete variables, or continuous variables. Some applications of traffic flow models include navigation systems, traffic light calibration, and calculating carbon emissions from traffic. 
 
     Our paper will focus only on the microscopic model called the Full Velocity Difference model. Using this model, we will explore scenarios including obstacles, and lane changes. From this, we will analyze state variables including position and velocity, and other metrics such as density and flow rate. 
     % Some questions to answer:
@@ -123,7 +123,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
             \centering
             \caption{Defining index, position, velocity, and gap of a car.}
         \end{figure}  
-        For simpler notation, we will refer to the vehicle in front of vehicle $\alpha$ by the leader vehicle $l$. For a single lane, car $l$ is vehicle $\alpha - 1$. However, vehicle $l$ is not necessarily vehicle $\alpha - 1$ for multiple lanes. 
+        For simpler notation, we will refer to the vehicle in front of vehicle $\alpha$ by the leader vehicle $l$. For a single lane, vehicle $l$ is vehicle $\alpha - 1$. However, vehicle $l$ is not necessarily vehicle $\alpha - 1$ for multiple lanes. 
 
         Taking the time derivatives of $x_\alpha (t)$ and $v_\alpha (t)$ lead to the general coupled differential equation describing velocity and acceleration respectively: 
         \begin{align} 
@@ -145,7 +145,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
         v_\alpha(t+\Delta t) &= v_\alpha(t) +a_{\rm mic}(s_\alpha(t), v_\alpha (t), v_l (t))\Delta t, \label{num_eq1}\\
         x_\alpha(t + \Delta t) &= x_\alpha(t) + \frac{v_\alpha (t) + v_\alpha (t+\Delta t)}{2}\Delta t \label{num_eq2},
     \end{align}
-    where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used.  This acceleration function is described in section (\ref{ch3.1}).
+    where $\Delta t$ is the time step and $a_{\rm mic}$ is the acceleration function defined by the car following model used.  This acceleration function $a_{\rm mic}$ is described in section (\ref{ch3.1}).
 
     When solving the equations above numerically, we must also consider the interactions between cars. The velocity equation uses $v_l(t)$, the velocity of the leading car at time $t$. So, when calculating the state of a car at each time step, it would be simpler to start from the backmost car and work up. This allows us to use the velocity value at time $t$ from the leading car.     
     \section{Car Following Model}
@@ -166,10 +166,10 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
     \begin{enumerate}[leftmargin=3\parindent]
       \item[i.] $v_{\rm opt} ' \geq 0$,
-      \item[ii.] $v_{\rm 0} (0) = 0$,
-      \item[iii.] $\lim_{s \rightarrow \infty} v_{\rm opt} (s) = v_0$. 
+      \item[ii.] $v_{\rm opt} (0) = 0$,
+      \item[iii.] $\lim\limits_{s \rightarrow \infty} v_{\rm opt} (s) = v_0$. 
     \end{enumerate}
-    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car gets closer to its leading car, the optimal velocity should decrease or remain constant. The second property reduces the risk of car crashes if the gap is $0$ by ensuring that the car does not move. The third property means that when the car is far away from the leading car, the optimal velocity is the desired speed $v_0$. This usually is taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies there properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen for its simplicity.
+    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car gets closer to its leading car, the optimal velocity should decrease or remain constant. The second property states that the car will not move if the gap is $0$. The third property means that when the car is far away from the leading car, the optimal velocity is the desired speed $v_0$. This is usually taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies there properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen for its simplicity.
     
     Typical parameters for highway traffic for the FVDM is given in the table below. 
     \begin{figure}[H]
