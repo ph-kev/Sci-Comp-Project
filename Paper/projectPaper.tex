@@ -169,7 +169,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       \item[ii.] $v_{\rm opt} (0) = 0$,
       \item[iii.] $\lim\limits_{s \rightarrow \infty} v_{\rm opt} (s) = v_0$. 
     \end{enumerate}
-    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car gets closer to its leading car, the optimal velocity should decrease or remain constant. The second property states that the car will not move if the gap is $0$. The third property means that when the car is far away from the leading car, the optimal velocity is the desired speed $v_0$. This is usually taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies there properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen for its simplicity.
+    The first property states that the optimal velocity is always increasing or is constant. Physically, this means that as a car gets closer to its leading car, the optimal velocity should decrease or remain constant. The second property states that the car will not move if the gap is $0$. The third property means that when the car is far away from the leading car, the optimal velocity is the desired speed $v_0$. This is usually taken as the speed limit of the highway or how fast the car is willing to go. Equation \ref{v_opt} satisfies these properties. We also note that there are many other optimal velocity functions that satisfy these properties and that this particular optimal velocity function is chosen for its simplicity.
     
     Typical parameters for highway traffic for the FVDM is given in the table below. 
     \begin{figure}[H]
@@ -216,12 +216,12 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
     We still have not addressed how to update the state variables of the first car. 
     Equation (\ref{a_mic}) needs values for the car's gap, $s_\alpha$, and the velocity of the leader car, $v_l$. 
-    However, the first car does not have a leader car, so, we impose a destination for the cars: $x_{\rm destination}$. 
-    The destination allows the first car to have the gap $s_{N} = x_{N} - x_{\rm destination}$. 
+    However, the first car does not have a leader car, so we impose a destination for the cars: $x_{\rm destination}$. 
+    The destination allows the first car to have the gap $s_{1} = x_{\rm destination} - x_{1} $. 
     To define a velocity, it might seem reasonable to set it to set $v_l = 0$. 
     However, if $v_l=0$, then the term $-\gamma \Delta v$ blows up. 
     In other words, this car is too wary of crashing into the destination. 
-    To resolve this problem, it is best to set $v_l = v_{N}$ which ensure that the term $-\gamma \Delta v$ is $0$. 
+    To resolve this problem, it is best to set $v_l = v_{1}$ which ensure that the term $-\gamma \Delta v$ is $0$. 
     However, this causes unexpected behavior with the first car's deceleration which will be addressed in section (\ref{sec:homogeneous_pitfal}). 
     
     
@@ -229,7 +229,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsection{Homogeneous Traffic}\label{sec:homogeneous}
 
     This is a simple demonstration of our model where a line of cars travel on a single lane. We use the same parameters in Figure (\ref{fig:parameters}). Furthermore, we set the length of the cars to be $5$ meters. At $t=0$, the initial conditions are $x_\alpha = 
-    200-\frac{200}{9}\left(a-1\right)$, $v_\alpha = 0$, and $x_{\rm destination} = 200$.
+    200-\frac{200}{9}\left(a-1\right)$, $v_\alpha = 0$, and $x_{\rm destination} = 2000$.
 
     \subsubsection{Data}
     We present graphs of position, velocity, and acceleration.
@@ -264,9 +264,9 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
       
       % For the gap versus time graph, we do not plot the gap of car $1$ since the gap is the difference between the car position $x_1$ and $x_{\rm position}$ which is not of interest. 
       \subsection{Analysis}\label{sec:homogeneous_analysis}
-      We examine the position, velocity, and acceleration graphs and how it relates to the Optimal Velocity Model. Each line of the graph represent a car. 
+      We examine the position, velocity, and acceleration graphs and how it relates to the Optimal Velocity Model. Each line of the graph represents a car. 
       
-      We first examine the position of the cars. We see that as the cars reach their optimal velocity at $t \approx 32$ seconds, all of the cars approach the destination linearly as expected. Additionally, observe that there are no intersections of the lines in the position graph. Since this is a single lane simulation, this means that there are no car crashes. 
+      We first examine the position of the cars. We see that as the cars reach their optimal velocity at $t \approx 32$ seconds, all of the cars approach the destination at a constant speed as expected. Additionally, observe that there are no intersections of the lines in the position graph. Since this is a single lane simulation, this means that there are no car crashes. 
 
       We now examine the velocity of the cars. At $t \approx 32$ seconds, the cars reach their maximum velocity $33.\bar{3}$ m/s which is the desired velocity $v_0$ in \ref{fig:parameters}. 
 
@@ -345,11 +345,11 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \subsubsection{Analysis}
     We first examine the position, density, and flow rate of the cars. From figure (\ref{fig:obstacle}), at $t=30$, the first car begins to slow down due to the obstacle. Subsequent cars begin to slow down. Around $t=50$, the first car's position is $x\approx 1192$. This results in the density of the cars increasing to around $3$ cars in a 20 $m$ interval as shown in figure (\ref{fig:obstacleDensity}). Furthermore, since the cars are unable to move due to the obstacle, the flow rate is $0$ as shown in figure (\ref{fig:obstacleDensity}). The mean velocity of all the cars is the same for traffic with and without the obstacle till roughly $t=30$. Looking at figure (\ref{fig:obstacleMean}), the maximum mean velocity is $33.3$ m/s for homogeneous traffic. Meanwhile, the maximum mean velocity is $29.0946$ m/s for the traffic with the obstacle. The cars never achieve a maximum mean velocity of $33.3$ m/s because as cars approach their maximum velocity, the first car's position is $x = x_{\rm destination}$. So, the first car begins to slow down. This results in the mean velocity  decreasing to $0$. 
 
-    We now examine each car's acceleration. From figure (\ref{fig:obstacle}), the first car decelerates at $t=30$ which is when the obstacle first appears. The other cars gradually decelerate following this. Roughly $6$ seconds later, the fifth car reaches its maximum deceleration of $-3.4932$ m/s$^2$. Roughly $8$ seconds later, the tenth car reaches its maximum deceleration of $-2.5861$ m/s$^2$. Roughly $8$ seconds later, the fifteenth car reaches its maximum deceleration of $-2.2633$ m/s$^2$. Roughly $8$ seconds later, the last car reaches its maximum deceleration of $-2.0998$ m/s$^2$. This phenomena is known as a stop-and-go wave \cite{traffic}. The effects of the first car stopping is not felt for the last car until much later. In this case, it took the wave to travel $30$ seconds to travel to the last car. Furthermore, the intensity of the braking lessens as the wave propagates from the first car to the last car. This suggests that given a sufficient number of cars and sufficient gaps between the cars, the wave would eventually die out. 
+    We now examine each car's acceleration. From figure (\ref{fig:obstacle}), the first car decelerates at $t=30$ which is when the obstacle first appears. The other cars gradually decelerate following this. Roughly $6$ seconds later, the fifth car reaches its maximum deceleration of $-3.4932$ m/s$^2$. Roughly $8$ seconds later, the tenth car reaches its maximum deceleration of $-2.5861$ m/s$^2$. Roughly $8$ seconds later, the fifteenth car reaches its maximum deceleration of $-2.2633$ m/s$^2$. Roughly $8$ seconds later, the last car reaches its maximum deceleration of $-2.0998$ m/s$^2$. This phenomenon is known as a stop-and-go wave \cite{traffic}. The effects of the first car stopping is not felt for the last car until much later. In this case, it took the wave to travel $30$ seconds to travel to the last car. Furthermore, the intensity of the braking lessens as the wave propagates from the first car to the last car. This suggests that given a sufficient number of cars and sufficient gaps between the cars, the wave would eventually die out. 
     \subsection{Lane Changes}
     \subsubsection{Implementation}\label{sec:laneChangeImplementation}
 
-   Lane changes are dealt with on a microscopic level, meaning that at we decided whether or not to change lanes at every time step for every vehicle.  In our model, we will only consider changing to adjacent lanes in a single time step. So, at time $t$, vehicle number $\alpha$ has three choices: go left, go right, or stay in the same lane.
+    We followed the details of lane changes for the Full Velocity Difference Model in \S 14.2 and \S 14.3 of \cite{traffic}. Lane changes are dealt with on a microscopic level, meaning that we decide to change lanes at every time step for every vehicle.  In our model, we will only consider changing to adjacent lanes in a single time step. So, at time $t$, vehicle $\alpha$ has three choices: switch to the left lane, switch to the right lane, or stay in the same lane.
 
       \begin{figure}[H]
         \begin{center}
@@ -360,7 +360,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
       When a vehicle decides to change lanes, it must do two things: check that the lane change is safe and check that there is an incentive to change lanes.
 
-      Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that $\hat s_{\hat f}$ is smaller than a predefined safe gap. This minimum gap is dependent on factors like the velocities of the vehicles and the reaction time of the drivers. 
+      Checking to see if a lane change is safe is straightforward. All the vehicle must do is ensure that $\hat s_{\hat f}$ is smaller than a predefined safe gap. This minimum gap is dependent on factors like the velocities of the vehicles and the time it takes to decelerate. 
       Considering this, we can define a minimum safe gap as 
       \begin{equation}
         s_{\rm safe} (v_{\hat f}, v_{\alpha}) = v_{\rm opt}^{-1} \left[v_{\hat f} -\tau b_{\rm safe} + \tau \gamma (v_{\hat f} - v_{\alpha}) \right]
@@ -398,7 +398,7 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
 
           \end{tabular}
           \end{center}
-          \caption{Typical parameters for highway traffic for the lane changing algorithm. From page 244 in \cite{traffic}}
+          \caption{Typical parameters for highway traffic for the lane changing algorithm. From page 244 in \cite{traffic}}.
       \end{figure}
 
       When adding the lane changing algorithm to our existing code, we must ensure that the order of the cars are tracked during every time step because $a_{\rm mic}$ and the lane changing algorithm use the state of the leading and following cars. If one car overtakes another, the array of cars will go out of order. We alleviated this by reordering our array of cars at the end of each time step.  
@@ -453,12 +453,12 @@ location = {[see sec.~\ref{ch3.1}]}]{T}{\ensuremath{T}}
     \begin{subfigure}[H]{.49\textwidth}
       \includegraphics[width=\linewidth]{mlbn_lanecars.eps}
       \centering
-      \caption{Number of cars per lane}
+      \caption{Number of cars per lane.}
     \end{subfigure}
     \begin{subfigure}[H]{.49\textwidth}
       \includegraphics[width=\linewidth]{mlbn_laneSpeed.eps}
       \centering
-      \caption{Mean speed of vehicles in each lane  }
+      \caption{Mean speed of vehicles in each lane.}
     \end{subfigure}
     \caption{Lane by lane metrics versus time.}
     \label{fig:mean lane speed}

@@ -1,1 +1,3 @@
 {"rule":"SENT_START_CONJUNCTIVE_LINKING_ADVERB_COMMA","sentence":"^\\QFurther Remarks.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QcarArr, an array of cars.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q:numsteps \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q length(carArr):\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q:\\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q State variables of \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qth car \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q Update \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Qth car by a time step.\\E$"}
